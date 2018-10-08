@@ -41,6 +41,8 @@ public:
                       const struct background &struct_background, \
                       const struct text &struct_text, \
                       const struct miscellanea &struct_miscellanea);
+
+    void hideSettingsButton();
 private:
 // функции для создания виджетов по их типу
     void createLabelWidget();
@@ -49,15 +51,20 @@ private:
     void createRunStringWidget();
     void createScheduleWidget();
     void createImageViewerWidget();
+    void createDontClickWidget();
+
+
+// создание кнопки настроек
+    void createSettingsButton();
 
     WidgetForMiniWidget *centralWidgetForMiniWidget = nullptr;
 
-    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER};
+    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
 //рамка
     QLabel*                 border          = nullptr;
 //рамка, которая будет появлятся при нажатии
     QLabel*                 borderClick     = nullptr;
-
+// кнопка настроек
     QPushButton*            buttonSettings  = nullptr;
 // структура рамки для мини виджета
     struct border struct_border;

@@ -28,7 +28,8 @@ RESOURCES += \
 
 FORMS += \
     widget_types/myWidgets/viewer/viewer.ui \
-    widget_types/leafer.ui
+    widget_types/leafer.ui \
+    widget_types/settings_window.ui
 
 HEADERS += \
     content/content.h \

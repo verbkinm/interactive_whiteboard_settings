@@ -59,13 +59,35 @@ void Mini_Widget::create_or_recreate_object(const struct border &struct_border, 
         case IMAGE_VIEWER:
                 createImageViewerWidget();
             break;
+        case DONT_CLICK:
+                createDontClickWidget();
+            break;
 
         default:
             break;
     }
 
+    createSettingsButton();
+}
+void Mini_Widget::createSettingsButton()
+{
     if(buttonSettings == nullptr)
-        buttonSettings = new QPushButton("Настройки", this);
+        buttonSettings = new QPushButton(this);
+    buttonSettings->setIcon(QIcon(":/img/img/settings_button.png"));
+
+    QSize result;
+    result.setWidth(this->width() * 0.7);
+    result.setHeight(this->height() * 0.7);
+
+    buttonSettings->setFixedSize(this->size());
+    buttonSettings->setIconSize(result);
+
+    buttonSettings->hide();
+
+    buttonSettings->setStyleSheet("color: rgb(255, 255, 255);"
+                                  "border: 2px solid rgb(100,200,200); "
+                                  "border-radius: 5px;"
+                                  "background: rgba(100,100,100,70%);");
 }
 void Mini_Widget::generalSettings()
 {
@@ -197,6 +219,10 @@ void Mini_Widget::createImageViewerWidget()
 {
     createLabelWidget();
 }
+void Mini_Widget::createDontClickWidget()
+{
+    createLabelWidget();
+}
 void Mini_Widget::setTypeValue(QString typeStr)
 {
     if( typeStr == "label" )
@@ -211,6 +237,8 @@ void Mini_Widget::setTypeValue(QString typeStr)
         type =  int(SCHEDULE);
     else if( typeStr == "image_viewer" )
         type =  int(IMAGE_VIEWER);
+    else if( typeStr == "dont_click" )
+        type =  int(DONT_CLICK);
 }
 
 void Mini_Widget::createLabelForMiniWidget()
@@ -226,6 +254,10 @@ void Mini_Widget::createLabelForMiniWidget()
 //    connect(centralWidgetForMiniWidget, SIGNAL(signalImagePressed()), this, SLOT(slotWidgetPressed()));
 //    connect(centralWidgetForMiniWidget, SIGNAL(signalImageReleased()), this, SLOT(slotWidgetReleased()));
 //    connect(centralWidgetForMiniWidget, SIGNAL(signalImageClicked()), this, SLOT(slotWidgetClicked()));
+}
+void Mini_Widget::hideSettingsButton()
+{
+    buttonSettings->hide();
 }
 void Mini_Widget::slotWidgetPressed()
 {
@@ -314,6 +346,10 @@ void Mini_Widget::slotWidgetClicked()
 bool Mini_Widget::event(QEvent *event)
 {
 //    qDebug() << event->type();
+    if(event->type() == QEvent::MouseButtonRelease){
+        qDebug() << this->objectName() << event->type();
+        buttonSettings->setVisible(true);
+    }
 
     return QWidget::event(event);
 }

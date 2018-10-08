@@ -50,11 +50,13 @@ private:
     QDir            dir;
     QStringList     list;
 
+// таймер для динамического виджета(где переключаются картинки)
     QTimer          timer;
 // итератор при листании слайдов
     int             it          = 0;
-
+//если файл рисунка существует - возвращает его путь, если нет - файл рисунка по умолчание(logo)
     QString         correct_image       (QString path);
+
     void            setImage            ();
     void            createImageList     (QString dirPath);
 

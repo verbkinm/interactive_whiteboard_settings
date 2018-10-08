@@ -22,11 +22,6 @@ void Main_Widget::slotFileChange()
     watcher.addPath(widget_settings.fileName());
     widget_settings.sync();
 
-//    qDebug() << list_miniWidgets.count() << widget_settings.childGroups().count();
-
-    qDebug() << "remove - " << getMiniWidgetRemoveList(getMiniWidgetStringList(list_miniWidgets), widget_settings.childGroups());
-    qDebug() << "add - " << getMiniWidgetAddList(getMiniWidgetStringList(list_miniWidgets), widget_settings.childGroups());
-
     foreach (QString str, getMiniWidgetRemoveList(getMiniWidgetStringList(list_miniWidgets), widget_settings.childGroups()))
         if( getMiniWidgetIndex(str) != -1)
         {
@@ -34,15 +29,6 @@ void Main_Widget::slotFileChange()
             miniWidget->~Mini_Widget();
             list_miniWidgets.removeAt(getMiniWidgetIndex(str));
         }
-
-    foreach (QString str, getMiniWidgetAddList(getMiniWidgetStringList(list_miniWidgets), widget_settings.childGroups()))
-        if( getMiniWidgetIndex(str) != -1)
-        {
-//            Mini_Widget* miniWidget = list_miniWidgets.at(getMiniWidgetIndex(str));
-//            miniWidget->~Mini_Widget();
-//            list_miniWidgets.append(getMiniWidgetIndex(str));
-        }
-    qDebug() << list_miniWidgets.count() << widget_settings.childGroups().count();
 
     addMyWidgets();
 }
@@ -195,6 +181,12 @@ void Main_Widget::addMyWidget(const QRect &rect, \
 bool Main_Widget::event(QEvent *event)
 {
 //    qDebug() << event->type();
+    if(event->type() == QEvent::MouseButtonRelease){
+        foreach (Mini_Widget* pmini, list_miniWidgets) {
+            if( !(pmini->geometry().contains(this->mapFromGlobal(QCursor::pos()))) )
+                pmini->hideSettingsButton();
+        }
+    }
     return QWidget::event(event);
 }
 void Main_Widget::paintEvent(QPaintEvent*)

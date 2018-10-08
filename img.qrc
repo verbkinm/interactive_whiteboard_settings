@@ -9,5 +9,6 @@
         <file>img/previos.png</file>
         <file>img/previos_push.png</file>
         <file>img/next_push.png</file>
+        <file>img/settings_button.png</file>
     </qresource>
 </RCC>
