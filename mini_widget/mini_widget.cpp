@@ -88,6 +88,8 @@ void Mini_Widget::createSettingsButton()
                                   "border: 2px solid rgb(100,200,200); "
                                   "border-radius: 5px;"
                                   "background: rgba(100,100,100,70%);");
+
+    connect(buttonSettings, SIGNAL(clicked(bool)), this, SLOT(slotSettingsButtonClicked()));
 }
 void Mini_Widget::generalSettings()
 {
@@ -369,6 +371,22 @@ void Mini_Widget::slotDeleteWidgetInContent()
 //    }
 //    delete panimOpen;
 
+}
+void Mini_Widget::slotSettingsButtonClicked()
+{
+    Settings_window *pSettingsWindow = new Settings_window();
+
+    this->hideSettingsButton();
+
+    if (pSettingsWindow->exec()  == QDialog::Accepted){
+
+    }
+    else
+    {
+        ;
+    }
+
+    delete pSettingsWindow;
 }
 Mini_Widget::~Mini_Widget()
 {

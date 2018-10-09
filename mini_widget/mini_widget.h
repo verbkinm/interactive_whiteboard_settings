@@ -7,6 +7,7 @@
 #include "widget_types/date.h"
 #include "widget_types/run_string.h"
 #include "widgetforminiwidget.h"
+#include "../widget_types/settings_window.h"
 
 
 #include "content/content.h"
@@ -118,6 +119,8 @@ private slots:
     void slotWidgetPressed();
     void slotWidgetReleased();
     void slotWidgetClicked();
+
+    void slotSettingsButtonClicked();
 };
 
 #endif // MINI_WIDGET_H

@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Settings_window</class>
+ <widget class="QDialog" name="Settings_window">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>551</width>
-    <height>595</height>
+    <width>576</width>
+    <height>577</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Настройки виджета</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="2" column="1">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="save">
      <property name="text">
       <string>Сохранить</string>
      </property>
     </widget>
    </item>
    <item row="2" column="2">
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="cancel">
      <property name="text">
       <string>Отмена</string>
      </property>
@@ -54,6 +60,13 @@
      </property>
     </spacer>
    </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="4">
     <widget class="QTabWidget" name="settings">
      <property name="tabPosition">
@@ -63,11 +76,11 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="position_and_size" native="true">
+     <widget class="QWidget" name="position_and_size_tab">
       <attribute name="title">
-       <string/>
+       <string>Положение и размер</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
@@ -77,34 +90,43 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="label_x">
             <property name="text">
              <string>X:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="X"/>
+           <widget class="QSpinBox" name="x"/>
           </item>
           <item>
-           <widget class="QSlider" name="horizontalSlider_X">
+           <widget class="QSlider" name="horizontalSlider_x">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="invertedControls">
+             <bool>false</bool>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::NoTicks</enum>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="label_y">
             <property name="text">
              <string>Y:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="Y"/>
+           <widget class="QSpinBox" name="y"/>
           </item>
           <item>
-           <widget class="QSlider" name="horizontalSlider_Y">
+           <widget class="QSlider" name="horizontalSlider_y">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -156,11 +178,24 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="border" native="true">
+     <widget class="QWidget" name="border_tab">
       <attribute name="title">
-       <string/>
+       <string>Рамка</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
@@ -184,6 +219,9 @@
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="3" column="0" colspan="2">
@@ -196,13 +234,6 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <widget class="QToolButton" name="border_setColor">
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0" colspan="2">
            <widget class="QLabel" name="label_5">
             <property name="text">
@@ -210,20 +241,19 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Альфа канал:</string>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="border_setColor">
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>16777215</height>
+             </size>
             </property>
-           </widget>
-          </item>
-          <item row="6" column="0" colspan="2">
-           <widget class="QSpinBox" name="border_alpha"/>
-          </item>
-          <item row="7" column="0" colspan="2">
-           <widget class="QSlider" name="horizontalSlider_border_alpha">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -236,28 +266,18 @@
           <string>Рамка, при нажатии:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="6" column="0" colspan="2">
-           <widget class="QSpinBox" name="borderClick_alpha"/>
-          </item>
-          <item row="7" column="0" colspan="2">
-           <widget class="QSlider" name="horizontalSlider_borderColor_alpha">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QSpinBox" name="borderClick_width"/>
           </item>
-          <item row="4" column="1">
-           <widget class="QToolButton" name="borderClick_setColor">
-            <property name="text">
-             <string>...</string>
+          <item row="4" column="0">
+           <widget class="QLineEdit" name="borderClick_color">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLineEdit" name="borderClick_color"/>
           </item>
           <item row="3" column="0" colspan="2">
            <widget class="QLabel" name="label_7">
@@ -283,21 +303,40 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_10">
+          <item row="4" column="1">
+           <widget class="QPushButton" name="borderClick_setColor">
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Альфа канал:</string>
+             <string>...</string>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
+       <item row="2" column="0">
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="type" native="true">
+     <widget class="QWidget" name="type_tab">
       <attribute name="title">
-       <string/>
+       <string>Тип</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -361,9 +400,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="path">
+     <widget class="QWidget" name="path_tab">
       <attribute name="title">
-       <string>Page</string>
+       <string>Путь</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="2" column="0">
@@ -373,12 +412,9 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
           <item row="1" column="0">
-           <widget class="QLineEdit" name="dirPath"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QToolButton" name="dirPath_button">
-            <property name="text">
-             <string>...</string>
+           <widget class="QLineEdit" name="dirPath">
+            <property name="readOnly">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -386,6 +422,19 @@
            <widget class="QLabel" name="label_13">
             <property name="text">
              <string>Путь к каталогу:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="dirPath_button">
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>...</string>
             </property>
            </widget>
           </item>
@@ -399,12 +448,9 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="1" column="0">
-           <widget class="QLineEdit" name="txtPath"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QToolButton" name="txtPath_button">
-            <property name="text">
-             <string>...</string>
+           <widget class="QLineEdit" name="txtPath">
+            <property name="readOnly">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -412,6 +458,19 @@
            <widget class="QLabel" name="label_14">
             <property name="text">
              <string>Путь к текстовому файлу:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="txtPath_button">
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>...</string>
             </property>
            </widget>
           </item>
@@ -425,12 +484,9 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="1" column="0">
-           <widget class="QLineEdit" name="iconPath"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QToolButton" name="iconPath_button">
-            <property name="text">
-             <string>...</string>
+           <widget class="QLineEdit" name="iconPath">
+            <property name="readOnly">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -438,6 +494,25 @@
            <widget class="QLabel" name="label_12">
             <property name="text">
              <string>Путь к картинки:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="iconPath_button">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>...</string>
             </property>
            </widget>
           </item>
@@ -451,12 +526,9 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_9">
           <item row="1" column="0">
-           <widget class="QLineEdit" name="xmlPath"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QToolButton" name="xmlPath_button">
-            <property name="text">
-             <string>...</string>
+           <widget class="QLineEdit" name="xmlPath">
+            <property name="readOnly">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -467,6 +539,210 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="xmlPath_button">
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="text_tab">
+      <attribute name="title">
+       <string>Текст</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>Текст:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="text">
+             <string>Размер текста:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="textSize"/>
+          </item>
+          <item>
+           <widget class="QSlider" name="horizontalSlider_textSize">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="title">
+          <string>Заголовок:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QLineEdit" name="title">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="speed_tab">
+      <attribute name="title">
+       <string>Скорость</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="title">
+          <string>Бегущая строка:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>Скорость:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="speed"/>
+          </item>
+          <item>
+           <widget class="QSlider" name="horizontalSlider_speed">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="other_tab">
+      <attribute name="title">
+       <string>Разное</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_11">
+       <item>
+        <widget class="QGroupBox" name="groupBox_12">
+         <property name="title">
+          <string>dynamicMiniWidget:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>dynamicMiniWidget:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="dynamicMiniWidget">
+            <item>
+             <property name="text">
+              <string>false</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>true</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>dynamicMiniWidgetTimer:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="dynamicMiniWidgetTimer"/>
+          </item>
+          <item>
+           <widget class="QSlider" name="horizontalSlider_dynamicMiniWidgetTimer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </widget>
        </item>
@@ -474,15 +750,352 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
   </layout>
+  <action name="actionBorderColor">
+   <property name="icon">
+    <iconset resource="../img.qrc">
+     <normaloff>:/img/img/settings_button.png</normaloff>:/img/img/settings_button.png</iconset>
+   </property>
+   <property name="text">
+    <string>action</string>
+   </property>
+   <property name="toolTip">
+    <string>Выбор цвета</string>
+   </property>
+  </action>
+  <action name="actionPath">
+   <property name="icon">
+    <iconset resource="../img.qrc">
+     <normaloff>:/img/img/settings_button.png</normaloff>:/img/img/settings_button.png</iconset>
+   </property>
+   <property name="text">
+    <string>path</string>
+   </property>
+  </action>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="../img.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>x</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_x</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_x</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>x</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_y</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>179</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_y</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>y</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>width</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_width</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>293</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>height</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_height</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>391</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_width</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>width</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_height</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>height</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>391</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>365</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>border_width</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_border_width</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>borderClick_width</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_borderClick_width</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>343</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_border_width</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>border_width</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_borderClick_width</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>borderClick_width</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textSize</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_textSize</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_textSize</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>textSize</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>speed</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_speed</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_speed</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>speed</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dynamicMiniWidgetTimer</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_dynamicMiniWidgetTimer</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_dynamicMiniWidgetTimer</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>dynamicMiniWidgetTimer</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>save</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings_window</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>244</x>
+     <y>556</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>Settings_window</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>330</x>
+     <y>556</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
