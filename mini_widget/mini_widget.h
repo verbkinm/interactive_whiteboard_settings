@@ -26,22 +26,12 @@ class Mini_Widget : public QWidget
     Q_OBJECT
 public:
 
-    Mini_Widget(const struct border &struct_border, \
-                QSize size, \
-                const struct path &struct_path, \
-                const struct background &struct_background, \
-                const struct text &struct_text, \
-                const struct miscellanea &struct_miscellanea, \
+    Mini_Widget(struct settingsMiniWidget *struct_settingsMiniWidget, \
                 QWidget *parent);
 
     ~Mini_Widget();
 
-    void create_or_recreate_object(const struct border &struct_border, \
-                      QSize size, \
-                      const struct path &struct_path, \
-                      const struct background &struct_background, \
-                      const struct text &struct_text, \
-                      const struct miscellanea &struct_miscellanea);
+    void create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget);
 
     void hideSettingsButton();
 private:
@@ -68,17 +58,7 @@ private:
 // кнопка настроек
     QPushButton*            buttonSettings  = nullptr;
 // структура рамки для мини виджета
-    struct border struct_border;
-// структура свойств текста
-    struct text   struct_text;
-//структура путей к файлам
-    struct path   struct_path;
-// структура свойств фона
-    struct background struct_background;
-// структура разных свойств
-    struct miscellanea struct_miscellanea;
-// передаваемый через конструктор параметр size, используется в функциях создания конкретных виджетов
-    QSize _size;
+    settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;
 
 
 // указатель для анимаций

@@ -10,35 +10,17 @@
 //задержка анимациив
 #define DURATION 1000
 
-Mini_Widget::Mini_Widget(const struct border &struct_border, QSize size, \
-                         const struct path &struct_path, \
-                         const struct background &struct_background, \
-                         const struct text &struct_text, \
-                         const struct miscellanea &struct_miscellanea, \
+Mini_Widget::Mini_Widget(settingsMiniWidget *struct_settingsMiniWidget, \
                          QWidget *parent) : QWidget(parent)
 {
-    create_or_recreate_object(struct_border, size, \
-                 struct_path, \
-                 struct_background, \
-                 struct_text, \
-                 struct_miscellanea);
+    create_or_recreate_object(struct_settingsMiniWidget);
 }
-void Mini_Widget::create_or_recreate_object(const struct border &struct_border, QSize size, \
-                               const struct path &struct_path, \
-                               const struct background &struct_background, \
-                               const struct text &struct_text, \
-                               const struct miscellanea &struct_miscellanea)
+void Mini_Widget::create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget)
 {
-    this->struct_border     = struct_border;
-    this->struct_text       = struct_text;
-    this->struct_path       = struct_path;
-    this->struct_background = struct_background;
-    this->struct_miscellanea= struct_miscellanea;
-
-    this->_size             = size;
+    this->pStruct_settingsMiniWidget = struct_settingsMiniWidget;
 
     generalSettings();
-    setTypeValue(this->struct_miscellanea.type);
+    setTypeValue(pStruct_settingsMiniWidget->miscellanea.type);
 
     switch (this->type) {
         case LABEL:
@@ -97,17 +79,32 @@ void Mini_Widget::generalSettings()
     if(borderClick == nullptr)
         borderClick              = new QLabel(this);
     //example: border-color: rgba(255, 0, 0, 75%)
-    borderClick->setStyleSheet("background-color:" + struct_border.borderClickColor + ";");
-    borderClick->setFixedSize(_size.width() + struct_border.borderClickWidth, _size.height() + struct_border.borderClickWidth);
+    borderClick->setStyleSheet("background-color:" + pStruct_settingsMiniWidget->border.borderClickColor + ";");
+    borderClick->setFixedSize(pStruct_settingsMiniWidget->size.width() \
+                              + \
+                              pStruct_settingsMiniWidget->border.borderClickWidth, \
+                              pStruct_settingsMiniWidget->size.height() \
+                              + \
+                              pStruct_settingsMiniWidget->border.borderClickWidth);
 //    borderClick->hide();
 
 //рамка
     if( border == nullptr)
         border              = new QLabel(this);
     //example: border-color: rgba(255, 0, 0, 75%)
-    border->setStyleSheet("background-color:" + struct_border.borderColor + ";");
-    border->setFixedSize(_size.width() + struct_border.borderWidth, _size.height() + struct_border.borderWidth);
-    border->move(struct_border.borderClickWidth / 2 - struct_border.borderWidth / 2, struct_border.borderClickWidth / 2 - struct_border.borderWidth / 2);
+    border->setStyleSheet("background-color:" + pStruct_settingsMiniWidget->border.borderColor + ";");
+    border->setFixedSize(pStruct_settingsMiniWidget->size.width() \
+                         + \
+                         pStruct_settingsMiniWidget->border.borderWidth, \
+                         pStruct_settingsMiniWidget->size.height() \
+                         + \
+                         pStruct_settingsMiniWidget->border.borderWidth);
+    border->move(pStruct_settingsMiniWidget->border.borderClickWidth / 2 \
+                 - \
+                 pStruct_settingsMiniWidget->border.borderWidth / 2, \
+                 pStruct_settingsMiniWidget->border.borderClickWidth / 2 \
+                 - \
+                 pStruct_settingsMiniWidget->border.borderWidth / 2);
 
     this->setStyleSheet("border-radius: 20px;");
     this->setFixedSize(borderClick->size());
@@ -115,103 +112,92 @@ void Mini_Widget::generalSettings()
 void Mini_Widget::createLabelWidget()
 {
     if(centralWidgetForMiniWidget == nullptr){
-        centralWidgetForMiniWidget = new WidgetForMiniWidget(&struct_path, \
-                                                             &struct_text, \
-                                                             &struct_miscellanea, \
-                                                             &_size, \
+        centralWidgetForMiniWidget = new WidgetForMiniWidget(pStruct_settingsMiniWidget, \
                                                              this);
     }
     else
     {
-        centralWidgetForMiniWidget->create_or_recreate_object(&struct_path, \
-                                                              &struct_text, \
-                                                              &struct_miscellanea, \
-                                                              &_size);
+        centralWidgetForMiniWidget->create_or_recreate_object(pStruct_settingsMiniWidget);
     }
-     centralWidgetForMiniWidget->move(struct_border.borderClickWidth / 2, \
-                         struct_border.borderClickWidth / 2);
+     centralWidgetForMiniWidget->move(pStruct_settingsMiniWidget->border.borderClickWidth / 2, \
+                         pStruct_settingsMiniWidget->border.borderClickWidth / 2);
 }
 void Mini_Widget::createClockWidget()
 {
     if(centralWidgetForMiniWidget == nullptr){
-        centralWidgetForMiniWidget = new WidgetForMiniWidget(&struct_path, \
-                                                             &struct_text, \
-                                                             &struct_miscellanea, \
-                                                             &_size, \
+        centralWidgetForMiniWidget = new WidgetForMiniWidget(pStruct_settingsMiniWidget, \
                                                              this);
-        pClock = new Clock(struct_text.textColor, struct_background.backgroundColor, centralWidgetForMiniWidget);
+        pClock = new Clock(pStruct_settingsMiniWidget->text.textColor, \
+                           pStruct_settingsMiniWidget->background.backgroundColor, \
+                           centralWidgetForMiniWidget);
     }
     else
     {
-        centralWidgetForMiniWidget->create_or_recreate_object(&struct_path, \
-                                                              &struct_text, \
-                                                              &struct_miscellanea, \
-                                                              &_size);
-        pClock->create_or_recreate_object(struct_text.textColor, struct_background.backgroundColor);
+        centralWidgetForMiniWidget->create_or_recreate_object(pStruct_settingsMiniWidget);
+        pClock->create_or_recreate_object(pStruct_settingsMiniWidget->text.textColor, \
+                                          pStruct_settingsMiniWidget->background.backgroundColor);
     }
-    centralWidgetForMiniWidget->move(struct_border.borderClickWidth / 2, \
-                                      struct_border.borderClickWidth / 2);
-    pClock->setFixedSize(_size);
+    centralWidgetForMiniWidget->move(pStruct_settingsMiniWidget->border.borderClickWidth / 2, \
+                                      pStruct_settingsMiniWidget->border.borderClickWidth / 2);
+    pClock->setFixedSize(pStruct_settingsMiniWidget->size);
 }
 void Mini_Widget::createDateWidget()
 {
     if(centralWidgetForMiniWidget == nullptr){
-        centralWidgetForMiniWidget = new WidgetForMiniWidget(&struct_path, \
-                                                             &struct_text, \
-                                                             &struct_miscellanea, \
-                                                             &_size, \
+        centralWidgetForMiniWidget = new WidgetForMiniWidget(pStruct_settingsMiniWidget, \
                                                              this);
-        pDate = new Date(struct_text.textColor, struct_text.textSize, \
-                        struct_background.backgroundColor, struct_miscellanea.datePattern, \
-                        centralWidgetForMiniWidget);
+        pDate = new Date(pStruct_settingsMiniWidget->text.textColor, \
+                         pStruct_settingsMiniWidget->text.textSize, \
+                         pStruct_settingsMiniWidget->background.backgroundColor, \
+                         pStruct_settingsMiniWidget->miscellanea.datePattern, \
+                         centralWidgetForMiniWidget);
     }
     else
     {
-        centralWidgetForMiniWidget->create_or_recreate_object(&struct_path, \
-                                                              &struct_text, \
-                                                              &struct_miscellanea, \
-                                                              &_size);
-        pDate->create_or_recreate_object(struct_text.textColor, struct_text.textSize, \
-                                         struct_background.backgroundColor, struct_miscellanea.datePattern);
+        centralWidgetForMiniWidget->create_or_recreate_object(pStruct_settingsMiniWidget);
+        pDate->create_or_recreate_object(pStruct_settingsMiniWidget->text.textColor, \
+                                         pStruct_settingsMiniWidget->text.textSize, \
+                                         pStruct_settingsMiniWidget->background.backgroundColor, \
+                                         pStruct_settingsMiniWidget->miscellanea.datePattern);
     }
-    centralWidgetForMiniWidget->move(struct_border.borderClickWidth / 2, \
-                                      struct_border.borderClickWidth / 2);
-    pDate->setFixedSize(_size);
+    centralWidgetForMiniWidget->move(pStruct_settingsMiniWidget->border.borderClickWidth / 2, \
+                                      pStruct_settingsMiniWidget->border.borderClickWidth / 2);
+    pDate->setFixedSize(pStruct_settingsMiniWidget->size);
 }
 void Mini_Widget::createRunStringWidget()
 {
     QString text;
-    QFile file(struct_path.txtPath);
+    QFile file(pStruct_settingsMiniWidget->path.txtPath);
 
     if( !(file.open(QIODevice::ReadOnly)) || file.size() > 10 * 1024)
-        text = "ОШИБКА ОТКРЫТИЯ ФАЙЛА \"" + struct_path.txtPath + "\"!";
+        text = "ОШИБКА ОТКРЫТИЯ ФАЙЛА \"" + pStruct_settingsMiniWidget->path.txtPath + "\"!";
     else
         text = QString::fromUtf8(file.readAll());
 
     file.close();
 
     if(centralWidgetForMiniWidget == nullptr){
-        centralWidgetForMiniWidget = new WidgetForMiniWidget(&struct_path, \
-                                                             &struct_text, \
-                                                             &struct_miscellanea, \
-                                                             &_size, \
+        centralWidgetForMiniWidget = new WidgetForMiniWidget(pStruct_settingsMiniWidget, \
                                                              this);
-        pRun_String = new Run_String(struct_text.textColor, struct_text.textSize, \
-                                struct_background.backgroundColor, text, struct_miscellanea.speed, \
-                                centralWidgetForMiniWidget);
+        pRun_String = new Run_String(pStruct_settingsMiniWidget->text.textColor, \
+                                     pStruct_settingsMiniWidget->text.textSize, \
+                                     pStruct_settingsMiniWidget->background.backgroundColor, \
+                                     text, \
+                                     pStruct_settingsMiniWidget->miscellanea.speed, \
+                                     centralWidgetForMiniWidget);
     }
     else
     {
-        centralWidgetForMiniWidget->create_or_recreate_object(&struct_path, \
-                                                              &struct_text, \
-                                                              &struct_miscellanea, \
-                                                              &_size);
-        pRun_String->create_or_recreate_object(struct_text.textColor, struct_text.textSize, \
-                                         struct_background.backgroundColor, text, struct_miscellanea.speed);
+        centralWidgetForMiniWidget->create_or_recreate_object(pStruct_settingsMiniWidget);
+        pRun_String->create_or_recreate_object(pStruct_settingsMiniWidget->text.textColor, \
+                                               pStruct_settingsMiniWidget->text.textSize, \
+                                               pStruct_settingsMiniWidget->background.backgroundColor, \
+                                               text, \
+                                               pStruct_settingsMiniWidget->miscellanea.speed);
     }
-    centralWidgetForMiniWidget->move(struct_border.borderClickWidth / 2, \
-                                      struct_border.borderClickWidth / 2);
-    pRun_String->setFixedSize(_size);
+    centralWidgetForMiniWidget->move(pStruct_settingsMiniWidget->border.borderClickWidth / 2, \
+                                     pStruct_settingsMiniWidget->border.borderClickWidth / 2);
+    pRun_String->setFixedSize(pStruct_settingsMiniWidget->size);
 }
 void Mini_Widget::createScheduleWidget()
 {
@@ -349,7 +335,7 @@ bool Mini_Widget::event(QEvent *event)
 {
 //    qDebug() << event->type();
     if(event->type() == QEvent::MouseButtonRelease){
-        qDebug() << this->objectName() << event->type();
+//        qDebug() << this->objectName() << event->type();
         buttonSettings->setVisible(true);
     }
 
@@ -374,7 +360,7 @@ void Mini_Widget::slotDeleteWidgetInContent()
 }
 void Mini_Widget::slotSettingsButtonClicked()
 {
-    Settings_window *pSettingsWindow = new Settings_window();
+    Settings_window *pSettingsWindow = new Settings_window(*pStruct_settingsMiniWidget);
 
     this->hideSettingsButton();
 

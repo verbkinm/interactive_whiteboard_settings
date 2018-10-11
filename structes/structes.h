@@ -2,6 +2,8 @@
 #define STRUCTES_H
 
 #include <QString>
+#include <QRect>
+#include <QSize>
 
 struct border
 {
@@ -40,6 +42,17 @@ struct miscellanea
     bool    dynamicMiniWidget       = false;//является ли виджет динамическим - виджет с заголовком и меняющимися изображениями, а так же с кнопками вперед и назад
     int     dynamicMiniWidgetTimer  = 5;    //таймер для автоматической смены изображений у dynamicMiniWidget
     int     speed                   = 20;
+};
+
+struct settingsMiniWidget
+{
+    struct border       border;
+    struct text         text;
+    struct path         path;
+    struct background   background;
+    struct miscellanea  miscellanea;
+    QRect               rect;
+    QSize               size;
 };
 
 #endif // STRUCTES_H

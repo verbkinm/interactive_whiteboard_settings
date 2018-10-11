@@ -4,45 +4,37 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-WidgetForMiniWidget::WidgetForMiniWidget(const struct path *struct_path, \
-                                         const struct text *struct_text, \
-                                         const struct miscellanea *struct_miscellanea, \
-                                         QSize *size, \
+WidgetForMiniWidget::WidgetForMiniWidget(settingsMiniWidget *struct_settingsMiniWidget, \
                                           QWidget *parent) : QWidget(parent)
 {
-    create_or_recreate_object(struct_path, \
-                              struct_text, \
-                              struct_miscellanea, \
-                              size);
+    create_or_recreate_object(struct_settingsMiniWidget);
 }
-void WidgetForMiniWidget::create_or_recreate_object(const struct path *struct_path, \
-                                          const struct text *struct_text, \
-                                          const struct miscellanea *struct_miscellanea, \
-                                          QSize *size)
+void WidgetForMiniWidget::create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget)
 {
-    this->setFixedSize(*size);
+    pStruct_settingsMiniWidget = struct_settingsMiniWidget;
+    this->setFixedSize(pStruct_settingsMiniWidget->size);
 
     if(layout == nullptr)
         layout      = new QVBoxLayout;
 
     if(title == nullptr)
         title       = new QLabel("Title");
-    title->setStyleSheet("font-size:" + QString::number(struct_text->textSize) + "px;");
+    title->setStyleSheet("font-size:" + QString::number(pStruct_settingsMiniWidget->text.textSize) + "px;");
 
     if(image == nullptr)
         image       = new QLabel("Image");
 
     if(leafer == nullptr)
-        leafer      = new Leafer(struct_text->textSize);
+        leafer      = new Leafer(pStruct_settingsMiniWidget->text.textSize);
     else
-        leafer->setTextSize(struct_text->textSize);
+        leafer->setTextSize(pStruct_settingsMiniWidget->text.textSize);
 
 
     layout->addWidget(title, 0, Qt::AlignHCenter);
     layout->addWidget(image, 2);
     layout->addWidget(leafer, 0, Qt::AlignHCenter);
 
-    title->setText(struct_text->titleText);
+    title->setText(pStruct_settingsMiniWidget->text.titleText);
 
     this->setLayout(layout);
 
@@ -53,22 +45,22 @@ void WidgetForMiniWidget::create_or_recreate_object(const struct path *struct_pa
 
     title->hide();
     leafer->hide();
-    currentPix.load(correct_image(struct_path->iconPath));
+    currentPix.load(correct_image(pStruct_settingsMiniWidget->path.iconPath));
     setImage();
 
     timer.stop();
-    timer.setInterval(struct_miscellanea->dynamicMiniWidgetTimer*1000);
+    timer.setInterval(pStruct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer*1000);
 
-    dynamicWidget(struct_miscellanea, struct_path);
+    dynamicWidget();
 }
-void WidgetForMiniWidget::dynamicWidget(const miscellanea *struct_miscellanea, const path *struct_path)
+void WidgetForMiniWidget::dynamicWidget()
 {
-    if(struct_miscellanea->dynamicMiniWidget)
+    if(pStruct_settingsMiniWidget->miscellanea.dynamicMiniWidget)
     {
         title->setVisible(true);
         leafer->setVisible(true);
 
-        dirPath = struct_path->dirPath;
+        dirPath = pStruct_settingsMiniWidget->path.dirPath;
         createImageList(dirPath);
 
         if(!list.isEmpty())

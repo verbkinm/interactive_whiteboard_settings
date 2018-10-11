@@ -17,22 +17,18 @@ class WidgetForMiniWidget : public QWidget
     Q_OBJECT
 
 public:
-    WidgetForMiniWidget(const path *struct_path, \
-                        const text *struct_text, \
-                        const miscellanea *struct_miscellanea,
-                        QSize *size, \
+    WidgetForMiniWidget(settingsMiniWidget *struct_settingsMiniWidget, \
                         QWidget *parent = 0);
     ~WidgetForMiniWidget();
 
     int getCurrentPage();
 
-    void            dynamicWidget(const struct miscellanea *struct_miscellanea, const struct path *struct_path);
+    void            dynamicWidget();
 
-    void            create_or_recreate_object(const path *struct_path, \
-                                    const text *struct_text, \
-                                    const miscellanea *struct_miscellanea,
-                                    QSize *size);
+    void            create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget);
+
 private:
+    settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;
 
     QLabel*         title       = nullptr;
     QLabel*         image       = nullptr;
