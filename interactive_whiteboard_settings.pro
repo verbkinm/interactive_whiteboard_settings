@@ -61,5 +61,6 @@ SOURCES += \
     widget_types/leafer.cpp \
     widget_types/date.cpp \
     widget_types/run_string.cpp \
-    widget_types/settings_window.cpp
+    widget_types/settings_window.cpp \
+    structes/structes.cpp
 

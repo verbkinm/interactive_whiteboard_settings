@@ -348,6 +348,15 @@
        </item>
        <item>
         <widget class="QComboBox" name="type_list">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="modelColumn">
+          <number>0</number>
+         </property>
          <item>
           <property name="text">
            <string>clock</string>
@@ -406,26 +415,19 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="2" column="0">
-        <widget class="QGroupBox" name="groupBox_6">
+        <widget class="QGroupBox" name="groupBox_dirPath">
          <property name="title">
-          <string/>
+          <string>Путь к каталогу:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="1" column="0">
+          <item row="0" column="0">
            <widget class="QLineEdit" name="dirPath">
             <property name="readOnly">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Путь к каталогу:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QPushButton" name="dirPath_button">
             <property name="maximumSize">
              <size>
@@ -442,26 +444,19 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QGroupBox" name="groupBox_7">
+        <widget class="QGroupBox" name="groupBox_txtPath">
          <property name="title">
-          <string/>
+          <string>Путь к текстовому файлу:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
-          <item row="1" column="0">
+          <item row="0" column="0">
            <widget class="QLineEdit" name="txtPath">
             <property name="readOnly">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Путь к текстовому файлу:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QPushButton" name="txtPath_button">
             <property name="maximumSize">
              <size>
@@ -478,26 +473,19 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_5">
+        <widget class="QGroupBox" name="groupBox_iconPath">
          <property name="title">
-          <string/>
+          <string>Путь к изображению:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="1" column="0">
+          <item row="0" column="0">
            <widget class="QLineEdit" name="iconPath">
             <property name="readOnly">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Путь к картинки:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QPushButton" name="iconPath_button">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -520,26 +508,19 @@
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QGroupBox" name="groupBox_8">
+        <widget class="QGroupBox" name="groupBox_xmlPath">
          <property name="title">
-          <string/>
+          <string>Путь к файлу расписания:</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_9">
-          <item row="1" column="0">
+          <item row="0" column="0">
            <widget class="QLineEdit" name="xmlPath">
             <property name="readOnly">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Путь к файлу расписания:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QPushButton" name="xmlPath_button">
             <property name="maximumSize">
              <size>
@@ -576,7 +557,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QGroupBox" name="groupBox_9">
+        <widget class="QGroupBox" name="groupBox_textSize">
          <property name="title">
           <string>Текст:</string>
          </property>
@@ -602,7 +583,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_10">
+        <widget class="QGroupBox" name="groupBox_title">
          <property name="title">
           <string>Заголовок:</string>
          </property>
@@ -638,7 +619,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
-        <widget class="QGroupBox" name="groupBox_11">
+        <widget class="QGroupBox" name="groupBox_runString">
          <property name="title">
           <string>Бегущая строка:</string>
          </property>
@@ -651,10 +632,23 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="speed"/>
+           <widget class="QSpinBox" name="speed">
+            <property name="minimum">
+             <number>-1</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QSlider" name="horizontalSlider_speed">
+            <property name="minimum">
+             <number>-1</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -687,7 +681,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_11">
        <item>
-        <widget class="QGroupBox" name="groupBox_12">
+        <widget class="QGroupBox" name="groupBox_dynamicMiniWidget">
          <property name="title">
           <string>dynamicMiniWidget:</string>
          </property>
@@ -730,21 +724,33 @@
             </property>
            </widget>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_pattern">
+         <property name="title">
+          <string>Шаблон:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_12">
           <item>
-           <spacer name="verticalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
+           <widget class="QLineEdit" name="pattern"/>
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

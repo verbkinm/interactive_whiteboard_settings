@@ -20,9 +20,8 @@ void Mini_Widget::create_or_recreate_object(settingsMiniWidget *struct_settingsM
     this->pStruct_settingsMiniWidget = struct_settingsMiniWidget;
 
     generalSettings();
-    setTypeValue(pStruct_settingsMiniWidget->miscellanea.type);
 
-    switch (this->type) {
+    switch (pStruct_settingsMiniWidget->pGetType(pStruct_settingsMiniWidget->miscellanea.type)) {
         case LABEL:
                 createLabelWidget();
             break;
@@ -210,23 +209,6 @@ void Mini_Widget::createImageViewerWidget()
 void Mini_Widget::createDontClickWidget()
 {
     createLabelWidget();
-}
-void Mini_Widget::setTypeValue(QString typeStr)
-{
-    if( typeStr == "label" )
-        type =  int(LABEL);
-    else if( typeStr == "clock" )
-        type =  int(CLOCK);
-    else if( typeStr == "date" )
-        type =  int(DATE);
-    else if( typeStr == "run_string" )
-        type =  int(RUN_STRING);
-    else if( typeStr == "schedule" )
-        type =  int(SCHEDULE);
-    else if( typeStr == "image_viewer" )
-        type =  int(IMAGE_VIEWER);
-    else if( typeStr == "dont_click" )
-        type =  int(DONT_CLICK);
 }
 
 void Mini_Widget::createLabelForMiniWidget()

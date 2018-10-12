@@ -26,7 +26,7 @@ private:
 
     void setValues();
     QColor toColor(QString str);
-    void setMaximum(QObjectList objectList);
+    void selectType();
 
 private slots:
     void    slotBorderColor();

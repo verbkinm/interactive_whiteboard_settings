@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QDebug>
+#include <QDesktopWidget>
 
 Settings_window::Settings_window(settingsMiniWidget &struct_settingsMiniWidget, QWidget *parent) :
     QDialog(parent),
@@ -20,34 +21,106 @@ Settings_window::Settings_window(settingsMiniWidget &struct_settingsMiniWidget, 
 
     pSettingsMiniWidget = &struct_settingsMiniWidget;
 
-
-    setMaximum(this->children());
-
     setValues();
+    selectType();
 }
-void Settings_window::setMaximum(QObjectList objectList)
+void Settings_window::selectType()
 {
-    for (int i = 0; i < objectList.count(); ++i) {
-        if( strcmp(objectList.at(i)->metaObject()->className(), "QSpinBox") == 0)
-            qobject_cast<QSpinBox*>(objectList.at(i))->setMaximum(10000);
-        else if( strcmp(objectList.at(i)->metaObject()->className(), "QSlider") == 0 )
-            qobject_cast<QSlider*>(objectList.at(i))->setMaximum(10000);
+    switch (pSettingsMiniWidget->pGetType(pSettingsMiniWidget->miscellanea.type)) {
+        case LABEL:
+            ui->groupBox_dirPath->setDisabled(true);
+            ui->groupBox_txtPath->setDisabled(true);
+            ui->groupBox_xmlPath->setDisabled(true);
+            ui->speed_tab->setDisabled(true);
+            ui->text_tab->setDisabled(true);
+            ui->other_tab->setDisabled(true);
+            break;
+        case CLOCK:
+            ui->path_tab->setDisabled(true);
+            ui->speed_tab->setDisabled(true);
+            ui->text_tab->setDisabled(true);
+            ui->other_tab->setDisabled(true);
+             break;
+        case DATE:
+            ui->path_tab->setDisabled(true);
+            ui->speed_tab->setDisabled(true);
+            ui->title->setDisabled(true);
+            ui->groupBox_dynamicMiniWidget->setDisabled(true);
+             break;
+        case RUN_STRING:
+            ui->groupBox_dirPath->setDisabled(true);
+            ui->groupBox_iconPath->setDisabled(true);
+            ui->groupBox_xmlPath->setDisabled(true);
+            ui->other_tab->setDisabled(true);
+            ui->title->setDisabled(true);
+             break;
+        case SCHEDULE:
+            ui->groupBox_dirPath->setDisabled(true);
+            ui->groupBox_txtPath->setDisabled(true);
+            ui->speed_tab->setDisabled(true);
+            ui->other_tab->setDisabled(true);
+            break;
+        case IMAGE_VIEWER:
+            ui->groupBox_xmlPath->setDisabled(true);
+            ui->groupBox_txtPath->setDisabled(true);
+            ui->speed_tab->setDisabled(true);
+            ui->pattern->setDisabled(true);
+            break;
+        case DONT_CLICK:
+//                createDontClickWidget();
+            break;
 
-        setMaximum(objectList.at(i)->children());
+        default:
+            break;
     }
 }
 void Settings_window::setValues()
 {
+    QDesktopWidget desktop;
 //положение и размер
+    ui->x->setMaximum(desktop.width());
+    ui->horizontalSlider_x->setMaximum(desktop.width());
     ui->x->setValue(pSettingsMiniWidget->rect.x());
+
+    ui->y->setMaximum(desktop.height());
+    ui->horizontalSlider_y->setMaximum(desktop.height());
     ui->y->setValue(pSettingsMiniWidget->rect.y());
+
+    ui->width->setMaximum(desktop.width());
+    ui->horizontalSlider_width->setMaximum(desktop.width());
     ui->width->setValue(pSettingsMiniWidget->size.width());
+
+    ui->height->setMaximum(desktop.height());
+    ui->horizontalSlider_height->setMaximum(desktop.height());
     ui->height->setValue(pSettingsMiniWidget->size.height());
+
 //рамка
     ui->border_width->setValue(pSettingsMiniWidget->border.borderWidth);
     ui->borderClick_width->setValue(pSettingsMiniWidget->border.borderClickWidth);
     ui->border_color->setText(pSettingsMiniWidget->border.borderColor);
     ui->borderClick_color->setText(pSettingsMiniWidget->border.borderClickColor);
+
+//тип
+    ui->type_list->setCurrentText(pSettingsMiniWidget->miscellanea.type);
+
+//путь
+    ui->iconPath->setText(pSettingsMiniWidget->path.iconPath);
+    ui->dirPath->setText(pSettingsMiniWidget->path.dirPath);
+    ui->txtPath->setText(pSettingsMiniWidget->path.txtPath);
+    ui->xmlPath->setText(pSettingsMiniWidget->path.xmlPath);
+
+//текст
+    ui->textSize->setValue(pSettingsMiniWidget->text.textSize);
+    ui->title->setText(pSettingsMiniWidget->text.titleText);
+
+//скорость
+    ui->speed->setValue(pSettingsMiniWidget->miscellanea.speed);
+
+//разное
+    ui->dynamicMiniWidget->setCurrentIndex(pSettingsMiniWidget->miscellanea.dynamicMiniWidget ? 1 : 0);
+    ui->dynamicMiniWidgetTimer->setValue(pSettingsMiniWidget->miscellanea.dynamicMiniWidgetTimer);
+    ui->pattern->setText(pSettingsMiniWidget->miscellanea.datePattern);
+
 }
 QColor Settings_window::toColor(QString str)
 {

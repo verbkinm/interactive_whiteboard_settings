@@ -50,7 +50,7 @@ private:
 
     WidgetForMiniWidget *centralWidgetForMiniWidget = nullptr;
 
-    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
+//    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
 //рамка
     QLabel*                 border          = nullptr;
 //рамка, которая будет появлятся при нажатии
@@ -87,8 +87,6 @@ private:
     void    generalSettings         ();
 // просто создание мини виджета с миниатюрой
     void    createLabelForMiniWidget();
-
-    void    setTypeValue            (QString typeStr);
 
 signals:
 

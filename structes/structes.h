@@ -5,6 +5,10 @@
 #include <QRect>
 #include <QSize>
 
+enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
+
+int getType(QString typeStr);
+
 struct border
 {
     QString borderColor         = "black";  // цвет рамки
@@ -40,8 +44,8 @@ struct miscellanea
     QString datePattern             = "dd-mm-yy"; // шаблон отображения даты для виджета Date
     int     timerSec                = 0;    //таймер, по которому закрывается виджет - остаётся только главное окно
     bool    dynamicMiniWidget       = false;//является ли виджет динамическим - виджет с заголовком и меняющимися изображениями, а так же с кнопками вперед и назад
-    int     dynamicMiniWidgetTimer  = 5;    //таймер для автоматической смены изображений у dynamicMiniWidget
-    int     speed                   = 20;
+    int     dynamicMiniWidgetTimer  = 0;    //таймер для автоматической смены изображений у dynamicMiniWidget
+    int     speed                   = -1;
 };
 
 struct settingsMiniWidget
@@ -53,6 +57,8 @@ struct settingsMiniWidget
     struct miscellanea  miscellanea;
     QRect               rect;
     QSize               size;
+    int (*pGetType)(QString) = getType;
+
 };
 
 #endif // STRUCTES_H

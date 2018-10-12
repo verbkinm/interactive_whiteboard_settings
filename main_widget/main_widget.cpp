@@ -112,9 +112,9 @@ void Main_Widget::addMyWidgets()
         struct_settingsMiniWidget->miscellanea.type             = widget_settings.value("type", "label").toString();
         struct_settingsMiniWidget->miscellanea.timerSec         = generals_settings.value("Generals/timerSec", 30).toInt();
         struct_settingsMiniWidget->miscellanea.dynamicMiniWidget= widget_settings.value("dynamicMiniWidget", false).toBool();
-        struct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer= widget_settings.value("dynamicMiniWidgetTimer", 5).toInt();
+        struct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer= widget_settings.value("dynamicMiniWidgetTimer", 0).toInt();
         struct_settingsMiniWidget->miscellanea.datePattern      = widget_settings.value("datePattern", "dd-mm-yy").toString();
-        struct_settingsMiniWidget->miscellanea.speed            = widget_settings.value("speed", "1000").toInt();
+        struct_settingsMiniWidget->miscellanea.speed            = widget_settings.value("speed", "-1").toInt();
 
         struct_settingsMiniWidget->background.backgroundColor   = widget_settings.value("backgroundColor", "black").toString();
         struct_settingsMiniWidget->background.backgroundImage   = generals_settings.value("Generals/backgoundImage", ":img/school2").toString();
