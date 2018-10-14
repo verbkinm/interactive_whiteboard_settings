@@ -69,7 +69,7 @@ void Mini_Widget::createSettingsButton()
                                   "border: 2px solid rgb(100,200,200); "
                                   "border-radius: 5px;"
                                   "background: rgba(100,100,100,70%);");
-
+    disconnect(buttonSettings, SIGNAL(clicked(bool)), this, SLOT(slotSettingsButtonClicked()));
     connect(buttonSettings, SIGNAL(clicked(bool)), this, SLOT(slotSettingsButtonClicked()));
 }
 void Mini_Widget::generalSettings()
@@ -346,8 +346,9 @@ void Mini_Widget::slotSettingsButtonClicked()
 
     this->hideSettingsButton();
 
-    if (pSettingsWindow->exec()  == QDialog::Accepted){
-
+    if (pSettingsWindow->exec()  ==   QDialog::Accepted){
+        //связь в main_widget
+        emit signalSaveSettings(pSettingsWindow->settingsMiniWidgetCopy);
     }
     else
     {

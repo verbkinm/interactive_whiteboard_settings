@@ -57,7 +57,7 @@ private:
     QLabel*                 borderClick     = nullptr;
 // кнопка настроек
     QPushButton*            buttonSettings  = nullptr;
-// структура рамки для мини виджета
+// структура настроек для мини виджета
     settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;
 
 
@@ -89,6 +89,8 @@ private:
     void    createLabelForMiniWidget();
 
 signals:
+//сохранить настройки
+    void signalSaveSettings(settingsMiniWidget &settingsWindow);
 
 private slots:
 // удаление объекта из памяти при закрытии окна

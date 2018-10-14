@@ -48,6 +48,7 @@ private:
 //SLOTS
 private slots:
     void            slotFileChange();
+    void            slotSaveSettings(settingsMiniWidget &settingsWindow);
 
 };
 

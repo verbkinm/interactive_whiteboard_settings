@@ -146,11 +146,11 @@ void Main_Widget::addMyWidget(settingsMiniWidget *struct_settingsMiniWidget, \
 
         pmini->setObjectName(objectName);
 
-        if(pmini != nullptr){
-            pmini->move(struct_settingsMiniWidget->rect.x(), struct_settingsMiniWidget->rect.y());
-            pmini->show();
-            list_miniWidgets.append(pmini);
-        }
+        pmini->move(struct_settingsMiniWidget->rect.x(), struct_settingsMiniWidget->rect.y());
+        pmini->show();
+        list_miniWidgets.append(pmini);
+
+        connect(pmini, SIGNAL(signalSaveSettings(settingsMiniWidget&)), this, SLOT(slotSaveSettings(settingsMiniWidget&)));
     }
     else
     {
@@ -158,6 +158,39 @@ void Main_Widget::addMyWidget(settingsMiniWidget *struct_settingsMiniWidget, \
         pmini->create_or_recreate_object(struct_settingsMiniWidget);
         pmini->move(struct_settingsMiniWidget->rect.x(), struct_settingsMiniWidget->rect.y());
     }
+
+}
+void Main_Widget::slotSaveSettings(settingsMiniWidget &settingsWindow)
+{
+    widget_settings.beginGroup(sender()->objectName());
+
+    widget_settings.setValue("x", settingsWindow.rect.x());
+    widget_settings.setValue("y", settingsWindow.rect.y());
+    widget_settings.setValue("width", settingsWindow.size.width());
+    widget_settings.setValue("height", settingsWindow.size.height());
+
+    widget_settings.setValue("borderWidth", settingsWindow.border.borderWidth);
+    widget_settings.setValue("borderRGBA", settingsWindow.border.borderColor);
+    widget_settings.setValue("borderClickWidth", settingsWindow.border.borderClickWidth);
+    widget_settings.setValue("borderClickRGBA", settingsWindow.border.borderClickColor);
+
+    widget_settings.setValue("dynamicMiniWidget", settingsWindow.miscellanea.dynamicMiniWidget);
+    widget_settings.setValue("dynamicMiniWidgetTimer", settingsWindow.miscellanea.dynamicMiniWidgetTimer);
+    widget_settings.setValue("datePattern", settingsWindow.miscellanea.datePattern);
+    widget_settings.setValue("speed", settingsWindow.miscellanea.speed);
+
+//    widget_settings.setValue("backgroundColor", settingsWindow.miscellanea.datePattern);
+
+//    widget_settings.setValue("textColor", settingsWindow.text.);
+    widget_settings.setValue("textSize", settingsWindow.text.textSize);
+    widget_settings.setValue("title", settingsWindow.text.titleText);
+
+    widget_settings.setValue("dirPath", settingsWindow.path.dirPath);
+    widget_settings.setValue("xmlPath", settingsWindow.path.xmlPath);
+    widget_settings.setValue("iconPath", settingsWindow.path.iconPath);
+    widget_settings.setValue("txtPath", settingsWindow.path.txtPath);
+
+    widget_settings.endGroup();
 
 }
 bool Main_Widget::event(QEvent *event)

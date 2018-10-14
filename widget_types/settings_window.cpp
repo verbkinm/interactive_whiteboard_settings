@@ -5,24 +5,170 @@
 #include <QDebug>
 #include <QDesktopWidget>
 
-Settings_window::Settings_window(settingsMiniWidget &struct_settingsMiniWidget, QWidget *parent) :
+Settings_window::Settings_window(const settingsMiniWidget &struct_settingsMiniWidget, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Settings_window)
 {
     ui->setupUi(this);
 
+//диалоговое окно выбора цвета
     connect(ui->border_setColor,        SIGNAL(clicked()), this, SLOT(on_actionBorderColor_triggered()) );
     connect(ui->borderClick_setColor,   SIGNAL(clicked()), this, SLOT(on_actionBorderColor_triggered()) );
 
+//диалоговое окно выбора папки или файла
     connect(ui->iconPath_button,        SIGNAL(clicked()), this, SLOT(on_actionPath_triggered()) );
     connect(ui->dirPath_button,         SIGNAL(clicked()), this, SLOT(on_actionPath_triggered()) );
     connect(ui->txtPath_button,         SIGNAL(clicked()), this, SLOT(on_actionPath_triggered()) );
     connect(ui->xmlPath_button,         SIGNAL(clicked()), this, SLOT(on_actionPath_triggered()) );
 
+//при смене данных в окне настроек - меняются значения в структуре settingsMiniWidgetCopy
+//(нужно для дальнейшего соханения изменившихся параметров виджета)
+    connect(ui->x, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->y, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->width, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->height, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+
+    connect(ui->border_width, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->border_color, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+    connect(ui->borderClick_width, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->borderClick_color, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+
+    connect(ui->iconPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+    connect(ui->dirPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+    connect(ui->txtPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+    connect(ui->xmlPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+
+    connect(ui->textSize, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->title, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+
+    connect(ui->speed, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+
+    connect(ui->dynamicMiniWidget, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->dynamicMiniWidgetTimer, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
+    connect(ui->pattern, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+
+//указатель на переданную структуру
     pSettingsMiniWidget = &struct_settingsMiniWidget;
 
+//установка значений из настроек
     setValues();
+
+//выключение параметров в окне настроек, которые не подходят для виджета
     selectType();
+}
+int Settings_window::getType(QString typeStr)
+{
+    if( typeStr == "x" )
+        return  X;
+    else if( typeStr == "y" )
+        return Y;
+    else if( typeStr == "width" )
+        return WIDTH;
+    else if( typeStr == "height" )
+        return  HEIGHT;
+
+    else if( typeStr == "border_width")
+        return BORDER_WIDTH;
+    else if( typeStr == "border_color")
+        return BORDER_COLOR;
+    else if( typeStr == "borderClick_width")
+        return BORDERCLICK_WIDTH;
+    else if( typeStr == "borderClick_color")
+        return BORDERCLICK_COLOR;
+
+    else if( typeStr == "iconPath")
+        return ICON_PATH;
+    else if( typeStr == "dirPath")
+        return DIR_PATH;
+    else if( typeStr == "txtPath")
+        return TXT_PATH;
+    else if( typeStr == "xmlPath")
+        return XML_PATH;
+
+    else if( typeStr == "textSize")
+        return TEXT_SIZE;
+    else if( typeStr == "title")
+        return TITLE;
+
+    else if( typeStr == "speed")
+        return SPEED;
+
+    else if( typeStr == "dynamicMiniWidget")
+        return DYNAMICMINIWIDGET;
+    else if( typeStr == "dynamicMiniWidgetTimer")
+        return DYNAMICMINIWIDGET_TIMER;
+    else if( typeStr == "pattern")
+        return PATTERN;
+
+    return -1;
+}
+void Settings_window::slotChange()
+{
+    switch (getType(sender()->objectName()) ) {
+    case X:
+        settingsMiniWidgetCopy.rect.setX(ui->x->value());
+        break;
+    case Y:
+        settingsMiniWidgetCopy.rect.setY(ui->y->value());
+        break;
+    case WIDTH:
+        settingsMiniWidgetCopy.size.setWidth(ui->width->value());
+        break;
+    case HEIGHT:
+        settingsMiniWidgetCopy.size.setHeight(ui->height->value());
+        break;
+
+    case BORDER_WIDTH:
+        settingsMiniWidgetCopy.border.borderWidth = ui->border_width->value();
+        break;
+    case BORDER_COLOR:
+        settingsMiniWidgetCopy.border.borderColor = ui->border_color->text();
+        break;
+    case BORDERCLICK_WIDTH:
+        settingsMiniWidgetCopy.border.borderClickWidth = ui->borderClick_width->value();
+        break;
+    case BORDERCLICK_COLOR:
+        settingsMiniWidgetCopy.border.borderClickColor= ui->borderClick_color->text();
+        break;
+
+    case ICON_PATH:
+        settingsMiniWidgetCopy.path.iconPath = ui->iconPath->text();
+        break;
+    case DIR_PATH:
+        settingsMiniWidgetCopy.path.dirPath = ui->dirPath->text();
+        break;
+    case TXT_PATH:
+        settingsMiniWidgetCopy.path.txtPath = ui->txtPath->text();
+        break;
+    case XML_PATH:
+        settingsMiniWidgetCopy.path.xmlPath = ui->xmlPath->text();
+        break;
+
+    case TEXT_SIZE:
+        settingsMiniWidgetCopy.text.textSize = ui->textSize->value();
+        break;
+    case TITLE:
+        settingsMiniWidgetCopy.text.titleText = ui->title->text();
+        break;
+
+    case SPEED:
+        settingsMiniWidgetCopy.miscellanea.speed = ui->speed->value();
+        break;
+
+    case DYNAMICMINIWIDGET:
+        settingsMiniWidgetCopy.miscellanea.dynamicMiniWidget = ui->dynamicMiniWidget->currentIndex();
+        break;
+    case DYNAMICMINIWIDGET_TIMER:
+        settingsMiniWidgetCopy.miscellanea.dynamicMiniWidgetTimer = ui->dynamicMiniWidgetTimer->value();
+        break;
+    case PATTERN:
+        settingsMiniWidgetCopy.miscellanea.datePattern = ui->pattern->text();
+        break;
+
+
+    default:
+        break;
+    }
 }
 void Settings_window::selectType()
 {
@@ -67,7 +213,13 @@ void Settings_window::selectType()
             ui->pattern->setDisabled(true);
             break;
         case DONT_CLICK:
-//                createDontClickWidget();
+            ui->speed_tab->setDisabled(true);
+            ui->text_tab->setDisabled(true);
+            ui->other_tab->setDisabled(true);
+            ui->groupBox_txtPath->setDisabled(true);
+            ui->groupBox_title->setDisabled(true);
+            ui->groupBox_dirPath->setDisabled(true);
+            ui->groupBox_xmlPath->setDisabled(true);
             break;
 
         default:
@@ -139,11 +291,6 @@ QColor Settings_window::toColor(QString str)
 
     return color;
 }
-void Settings_window::slotBorderColor()
-{
-
-
-}
 Settings_window::~Settings_window()
 {
     delete ui;
@@ -177,17 +324,39 @@ void Settings_window::on_actionBorderColor_triggered()
 
 void Settings_window::on_actionPath_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    QString fileName;
+
+    if(sender()->objectName() == "dirPath_button")
+    {
+        fileName = QFileDialog::getExistingDirectory(this,
+                                   QString::fromUtf8("Открыть папку"),
+                                   QDir::homePath(),
+                                   QFileDialog::ShowDirsOnly
+                                   | QFileDialog::DontResolveSymlinks);
+        ui->dirPath->setText(fileName);
+    }
+    else if(sender()->objectName() == "xmlPath_button")
+    {
+        fileName = QFileDialog::getOpenFileName(this,
+                                QString::fromUtf8("Открыть файл"),
+                                QDir::homePath(),
+                                "XML (*.xml);;All files (*.*)");
+        ui->xmlPath->setText(fileName);
+    }
+    else if(sender()->objectName() == "iconPath_button")
+    {
+        fileName = QFileDialog::getOpenFileName(this,
                                 QString::fromUtf8("Открыть файл"),
                                 QDir::homePath(),
                                 "Images (*.png *.xpm *.jpg);;All files (*.*)");
-
-    if(sender()->objectName() == "iconPath_button")
         ui->iconPath->setText(fileName);
-    else if(sender()->objectName() == "dirPath_button")
-        ui->dirPath->setText(fileName);
-    if(sender()->objectName() == "txtPath_button")
+    }
+    else if(sender()->objectName() == "txtPath_button")
+    {
+        fileName = QFileDialog::getOpenFileName(this,
+                                QString::fromUtf8("Открыть файл"),
+                                QDir::homePath(),
+                                "TXT (*.txt);;All files (*.*)");
         ui->txtPath->setText(fileName);
-    else if(sender()->objectName() == "xmlPath_button")
-        ui->xmlPath->setText(fileName);
+    }
 }
