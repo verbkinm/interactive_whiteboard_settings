@@ -101,6 +101,9 @@ private slots:
     void slotWidgetClicked();
 
     void slotSettingsButtonClicked();
+
+    //реагирование на изменение в окне настроек
+    void slotSettingsChange(int objectName, QVariant data);
 };
 
 #endif // MINI_WIDGET_H

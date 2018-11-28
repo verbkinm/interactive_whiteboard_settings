@@ -22,7 +22,7 @@ Settings_window::Settings_window(const settingsMiniWidget &struct_settingsMiniWi
     connect(ui->xmlPath_button,         SIGNAL(clicked()), this, SLOT(on_actionPath_triggered()) );
 
 //при смене данных в окне настроек - меняются значения в структуре settingsMiniWidgetCopy
-//(нужно для дальнейшего соханения изменившихся параметров виджета)
+//(нужно для дальнейшего сохранения изменившихся параметров виджета)
     connect(ui->x, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
     connect(ui->y, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
     connect(ui->width, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
@@ -107,62 +107,80 @@ void Settings_window::slotChange()
     switch (getType(sender()->objectName()) ) {
     case X:
         settingsMiniWidgetCopy.rect.setX(ui->x->value());
+        emit signal_Change_Settings(X, QVariant(ui->x->value()));
         break;
     case Y:
         settingsMiniWidgetCopy.rect.setY(ui->y->value());
+        emit signal_Change_Settings(Y, QVariant(ui->y->value()));
         break;
     case WIDTH:
         settingsMiniWidgetCopy.size.setWidth(ui->width->value());
+        emit signal_Change_Settings(WIDTH, QVariant(ui->width->value()));
         break;
     case HEIGHT:
         settingsMiniWidgetCopy.size.setHeight(ui->height->value());
+        emit signal_Change_Settings(HEIGHT, QVariant(ui->height->value()));
         break;
 
     case BORDER_WIDTH:
         settingsMiniWidgetCopy.border.borderWidth = ui->border_width->value();
+        emit signal_Change_Settings(BORDER_WIDTH, QVariant(ui->border_width->value()));
         break;
     case BORDER_COLOR:
         settingsMiniWidgetCopy.border.borderColor = ui->border_color->text();
+        emit signal_Change_Settings(BORDER_COLOR, QVariant(ui->border_color->text()) );
         break;
     case BORDERCLICK_WIDTH:
         settingsMiniWidgetCopy.border.borderClickWidth = ui->borderClick_width->value();
+        emit signal_Change_Settings(BORDERCLICK_WIDTH, QVariant(ui->borderClick_width->value()));
         break;
     case BORDERCLICK_COLOR:
         settingsMiniWidgetCopy.border.borderClickColor= ui->borderClick_color->text();
+        emit signal_Change_Settings(BORDERCLICK_COLOR, QVariant(ui->borderClick_color->text()));
         break;
 
     case ICON_PATH:
         settingsMiniWidgetCopy.path.iconPath = ui->iconPath->text();
+        emit signal_Change_Settings(ICON_PATH, QVariant(ui->iconPath->text()));
         break;
     case DIR_PATH:
         settingsMiniWidgetCopy.path.dirPath = ui->dirPath->text();
+        emit signal_Change_Settings(DIR_PATH, QVariant(ui->dirPath->text()));
         break;
     case TXT_PATH:
         settingsMiniWidgetCopy.path.txtPath = ui->txtPath->text();
+        emit signal_Change_Settings(TXT_PATH, QVariant(ui->txtPath->text()));
         break;
     case XML_PATH:
         settingsMiniWidgetCopy.path.xmlPath = ui->xmlPath->text();
+        emit signal_Change_Settings(XML_PATH, QVariant(ui->xmlPath->text()));
         break;
 
     case TEXT_SIZE:
         settingsMiniWidgetCopy.text.textSize = ui->textSize->value();
+        emit signal_Change_Settings(TEXT_SIZE, QVariant(ui->textSize->value()));
         break;
     case TITLE:
         settingsMiniWidgetCopy.text.titleText = ui->title->text();
+        emit signal_Change_Settings(TITLE, QVariant(ui->title->text()));
         break;
 
     case SPEED:
         settingsMiniWidgetCopy.miscellanea.speed = ui->speed->value();
+        emit signal_Change_Settings(SPEED, QVariant(ui->speed->value()));
         break;
 
     case DYNAMICMINIWIDGET:
         settingsMiniWidgetCopy.miscellanea.dynamicMiniWidget = ui->dynamicMiniWidget->currentIndex();
+        emit signal_Change_Settings(DYNAMICMINIWIDGET, QVariant(ui->dynamicMiniWidget->currentIndex()));
         break;
     case DYNAMICMINIWIDGET_TIMER:
         settingsMiniWidgetCopy.miscellanea.dynamicMiniWidgetTimer = ui->dynamicMiniWidgetTimer->value();
+        emit signal_Change_Settings(DYNAMICMINIWIDGET_TIMER, QVariant(ui->dynamicMiniWidgetTimer->value()));
         break;
     case PATTERN:
         settingsMiniWidgetCopy.miscellanea.datePattern = ui->pattern->text();
+        emit signal_Change_Settings(PATTERN, QVariant(ui->pattern->text()));
         break;
 
 

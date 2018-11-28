@@ -7,6 +7,8 @@
 #include <QPropertyAnimation>
 #include <QTextCodec>
 
+#include <QVariant>
+
 //задержка анимациив
 #define DURATION 1000
 
@@ -44,6 +46,8 @@ void Mini_Widget::create_or_recreate_object(settingsMiniWidget *struct_settingsM
                 createDontClickWidget();
             break;
 
+        //bells
+
         default:
             break;
     }
@@ -67,7 +71,7 @@ void Mini_Widget::createSettingsButton()
 
     buttonSettings->setStyleSheet("color: rgb(255, 255, 255);"
                                   "border: 2px solid rgb(100,200,200); "
-                                  "border-radius: 5px;"
+                                  "border-radius: 15px;"
                                   "background: rgba(100,100,100,70%);");
     disconnect(buttonSettings, SIGNAL(clicked(bool)), this, SLOT(slotSettingsButtonClicked()));
     connect(buttonSettings, SIGNAL(clicked(bool)), this, SLOT(slotSettingsButtonClicked()));
@@ -344,6 +348,8 @@ void Mini_Widget::slotSettingsButtonClicked()
 {
     Settings_window *pSettingsWindow = new Settings_window(*pStruct_settingsMiniWidget);
 
+    connect(pSettingsWindow, SIGNAL(signal_Change_Settings(int, QVariant)), this, SLOT(slotSettingsChange(int, QVariant)));
+
     this->hideSettingsButton();
 
     if (pSettingsWindow->exec()  ==   QDialog::Accepted){
@@ -352,10 +358,81 @@ void Mini_Widget::slotSettingsButtonClicked()
     }
     else
     {
-        ;
+        emit signalSaveSettings(*pStruct_settingsMiniWidget);
     }
 
     delete pSettingsWindow;
+}
+void Mini_Widget::slotSettingsChange(int objectName, QVariant data)
+{
+    switch (objectName) {
+    case Settings_window::X:
+        this->move(data.toInt(), this->y());
+        break;
+    case Settings_window::Y:
+        this->move(this->x(), data.toInt());
+        break;
+    case Settings_window::WIDTH:
+        this->setFixedWidth(data.toInt());
+        centralWidgetForMiniWidget->setFixedWidth(data.toInt());
+        border->setFixedWidth(data.toInt() - pStruct_settingsMiniWidget->border.borderClickWidth);
+        borderClick->setFixedWidth(data.toInt());
+        break;
+//    case HEIGHT:
+//        settingsMiniWidgetCopy.size.setHeight(ui->height->value());
+//        break;
+
+//    case BORDER_WIDTH:
+//        settingsMiniWidgetCopy.border.borderWidth = ui->border_width->value();
+//        break;
+//    case BORDER_COLOR:
+//        settingsMiniWidgetCopy.border.borderColor = ui->border_color->text();
+//        break;
+//    case BORDERCLICK_WIDTH:
+//        settingsMiniWidgetCopy.border.borderClickWidth = ui->borderClick_width->value();
+//        break;
+//    case BORDERCLICK_COLOR:
+//        settingsMiniWidgetCopy.border.borderClickColor= ui->borderClick_color->text();
+//        break;
+
+//    case ICON_PATH:
+//        settingsMiniWidgetCopy.path.iconPath = ui->iconPath->text();
+//        break;
+//    case DIR_PATH:
+//        settingsMiniWidgetCopy.path.dirPath = ui->dirPath->text();
+//        break;
+//    case TXT_PATH:
+//        settingsMiniWidgetCopy.path.txtPath = ui->txtPath->text();
+//        break;
+//    case XML_PATH:
+//        settingsMiniWidgetCopy.path.xmlPath = ui->xmlPath->text();
+//        break;
+
+//    case TEXT_SIZE:
+//        settingsMiniWidgetCopy.text.textSize = ui->textSize->value();
+//        break;
+//    case TITLE:
+//        settingsMiniWidgetCopy.text.titleText = ui->title->text();
+//        break;
+
+//    case SPEED:
+//        settingsMiniWidgetCopy.miscellanea.speed = ui->speed->value();
+//        break;
+
+//    case DYNAMICMINIWIDGET:
+//        settingsMiniWidgetCopy.miscellanea.dynamicMiniWidget = ui->dynamicMiniWidget->currentIndex();
+//        break;
+//    case DYNAMICMINIWIDGET_TIMER:
+//        settingsMiniWidgetCopy.miscellanea.dynamicMiniWidgetTimer = ui->dynamicMiniWidgetTimer->value();
+//        break;
+//    case PATTERN:
+//        settingsMiniWidgetCopy.miscellanea.datePattern = ui->pattern->text();
+//        break;
+
+
+    default:
+        break;
+    }
 }
 Mini_Widget::~Mini_Widget()
 {

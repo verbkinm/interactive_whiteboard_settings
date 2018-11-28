@@ -196,8 +196,10 @@ void Main_Widget::slotSaveSettings(settingsMiniWidget &settingsWindow)
 bool Main_Widget::event(QEvent *event)
 {
 //    qDebug() << event->type();
-    if(event->type() == QEvent::MouseButtonRelease){
-        foreach (Mini_Widget* pmini, list_miniWidgets) {
+    if(event->type() == QEvent::MouseButtonRelease)
+    {
+        foreach (Mini_Widget* pmini, list_miniWidgets)
+        {
             if( !(pmini->geometry().contains(this->mapFromGlobal(QCursor::pos()))) )
                 pmini->hideSettingsButton();
         }

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QWidget>
 #include <QColorDialog>
+#include <QVariant>
 
 #include "../structes/structes.h"
 
@@ -46,6 +47,10 @@ private slots:
     void        on_actionBorderColor_triggered();
     void        on_actionPath_triggered();
     void        slotChange();
+
+signals:
+    void        signal_Change_Settings(int objectName, QVariant data);
+
 };
 
 #endif // SETTINGS_WINDOW_H

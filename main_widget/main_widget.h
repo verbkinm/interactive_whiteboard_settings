@@ -50,6 +50,8 @@ private slots:
     void            slotFileChange();
     void            slotSaveSettings(settingsMiniWidget &settingsWindow);
 
+
+
 };
 
 #endif // MAIN_WIDGET_H
