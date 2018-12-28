@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QWidget>
-#include <QColorDialog>
 #include <QVariant>
 
 #include "../structes/structes.h"
@@ -17,7 +16,7 @@ class Settings_window : public QDialog
     Q_OBJECT
 
 public:
-    Settings_window(const settingsMiniWidget &struct_settingsMiniWidget, QWidget *parent = 0);
+    Settings_window(const settingsMiniWidget &struct_settingsMiniWidget, QWidget *parent = nullptr);
     ~Settings_window();
 
 //копия переданной структуры
@@ -25,6 +24,7 @@ public:
 
     enum{X, Y, WIDTH, HEIGHT, \
          BORDER_WIDTH, BORDER_COLOR, BORDERCLICK_WIDTH, BORDERCLICK_COLOR,\
+         WIDGET_TYPE, WIDGET_NAME, \
          ICON_PATH, DIR_PATH, TXT_PATH, XML_PATH, \
          TEXT_SIZE, TITLE, \
          SPEED, \

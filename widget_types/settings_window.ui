@@ -101,6 +101,12 @@
           </item>
           <item>
            <widget class="QSlider" name="horizontalSlider_x">
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="tracking">
+             <bool>true</bool>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -206,13 +212,26 @@
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="2" column="0" colspan="2">
            <widget class="QSlider" name="horizontalSlider_border_width">
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="tracking">
+             <bool>true</bool>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::NoTicks</enum>
             </property>
            </widget>
           </item>
           <item row="1" column="0" colspan="2">
-           <widget class="QSpinBox" name="border_width"/>
+           <widget class="QSpinBox" name="border_width">
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="0">
            <widget class="QLineEdit" name="border_color">
@@ -267,7 +286,11 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="1" column="0" colspan="2">
-           <widget class="QSpinBox" name="borderClick_width"/>
+           <widget class="QSpinBox" name="borderClick_width">
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+           </widget>
           </item>
           <item row="4" column="0">
            <widget class="QLineEdit" name="borderClick_color">
@@ -291,6 +314,9 @@
           </item>
           <item row="2" column="0" colspan="2">
            <widget class="QSlider" name="horizontalSlider_borderClick_width">
+            <property name="singleStep">
+             <number>1</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -349,7 +375,7 @@
        <item>
         <widget class="QComboBox" name="type_list">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -392,6 +418,20 @@
            <string>schedule</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Имя виджета:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="widgetName">
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>

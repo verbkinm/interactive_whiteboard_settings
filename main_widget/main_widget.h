@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QFileSystemWatcher>
 
+#include "contextmenu.h"
 #include "mini_widget/mini_widget.h"
 #include "structes/structes.h"
 
@@ -31,6 +32,9 @@ private:
 
 //Отслеживание изменений в настройках
     QFileSystemWatcher watcher;
+
+//контекстное меню, при нажатии на пустом месте главного окна
+    ContextMenu*    pMenu    = nullptr;
 //FUNCTIONS
     void            addMyWidgets        ();
     void            addMyWidget         (settingsMiniWidget *struct_settingsMiniWidget, \
@@ -42,6 +46,9 @@ private:
     QStringList     getMiniWidgetRemoveList(QStringList objectNameList, QStringList settingsList);
     QStringList     getMiniWidgetAddList(QStringList objectNameList, QStringList settingsList);
 
+    void            showContextMenu     ();
+    void            deleteContextMenu   ();
+
     void            paintEvent          (QPaintEvent*);
     virtual bool    event               (QEvent *event);
 
@@ -50,7 +57,7 @@ private slots:
     void            slotFileChange();
     void            slotSaveSettings(settingsMiniWidget &settingsWindow);
 
-
+    void            slotCreateNewWidget();
 
 };
 

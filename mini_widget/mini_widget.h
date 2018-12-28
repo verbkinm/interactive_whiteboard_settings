@@ -16,9 +16,8 @@
 #include <QWidget>
 #include <QLabel>
 #include <QSize>
+#include <QPaintEvent>
 //#include <QPropertyAnimation>
-
-
 
 
 class Mini_Widget : public QWidget
@@ -52,14 +51,16 @@ private:
 
 //    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
 //рамка
-    QLabel*                 border          = nullptr;
+    QWidget*                 border          = nullptr;
 //рамка, которая будет появлятся при нажатии
-    QLabel*                 borderClick     = nullptr;
+    Mini_Widget*                 borderClick     = this;
 // кнопка настроек
     QPushButton*            buttonSettings  = nullptr;
 // структура настроек для мини виджета
     settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;
 
+    QVBoxLayout*            borderClickLayout      = nullptr;
+    QVBoxLayout*            borderLayout           = nullptr;
 
 // указатель для анимаций
 //    QPropertyAnimation* panimOpen           = nullptr;
@@ -85,20 +86,16 @@ private:
 
 // для установления общих параметров для всех виджетов
     void    generalSettings         ();
-// просто создание мини виджета с миниатюрой
-    void    createLabelForMiniWidget();
+
+protected:
+    void paintEvent(QPaintEvent *);
 
 signals:
 //сохранить настройки
     void signalSaveSettings(settingsMiniWidget &settingsWindow);
 
 private slots:
-// удаление объекта из памяти при закрытии окна
-    void slotDeleteWidgetInContent();
 
-    void slotWidgetPressed();
-    void slotWidgetReleased();
-    void slotWidgetClicked();
 
     void slotSettingsButtonClicked();
 

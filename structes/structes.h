@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QRect>
+#include <QPoint>
 #include <QSize>
 
 enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
@@ -12,7 +13,7 @@ int getType(QString typeStr);
 struct border
 {
     QString borderColor         = "black";  // цвет рамки
-    QString borderClickColor    = "black";  // цвет появляющийся рамки при нажатии
+    QString borderClickColor    = "white";  // цвет появляющийся рамки при нажатии
     int borderWidth             = 10;       // ширина рамки
     int borderClickWidth        = 10;       // ширина появляющийся рамки при нажатии
 };
@@ -20,7 +21,7 @@ struct border
 struct text
 {
     QString textColor           = "black";  // цвет текста
-    QString titleText           = "\0";     // текст заголовка
+    QString titleText           = "title";     // текст заголовка
     int textSize                = 12;       // размер шрифта
 };
 
@@ -34,13 +35,13 @@ struct path
 
 struct background
 {
-    QString backgroundColor     = "black";  // цвет фона
+    QString backgroundColor     = "\0";  // цвет фона
     QString backgroundImage     = "\0";     // картинка фона
 };
 
 struct miscellanea
 {
-    QString type                    = "\0"; //тип виджета (label, clock, schedule, image_viewer)
+    QString type                    = "label"; //тип виджета (label, clock, schedule, image_viewer)
     QString datePattern             = "dd-mm-yy"; // шаблон отображения даты для виджета Date
     int     timerSec                = 0;    //таймер, по которому закрывается виджет - остаётся только главное окно
     bool    dynamicMiniWidget       = false;//является ли виджет динамическим - виджет с заголовком и меняющимися изображениями, а так же с кнопками вперед и назад
@@ -55,8 +56,10 @@ struct settingsMiniWidget
     struct path         path;
     struct background   background;
     struct miscellanea  miscellanea;
-    QRect               rect;
-    QSize               size;
+    QRect               rect = QRect(0,0, 100,100);
+    QSize               size = QSize(100, 100);
+//    QPoint              point = rect.topLeft();
+    QString             widgetName = "new Widget";
     int (*pGetType)(QString) = getType;
 
 };

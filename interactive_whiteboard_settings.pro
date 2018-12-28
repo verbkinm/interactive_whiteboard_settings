@@ -45,7 +45,8 @@ HEADERS += \
     widget_types/leafer.h \
     widget_types/date.h \
     widget_types/run_string.h \
-    widget_types/settings_window.h
+    widget_types/settings_window.h \
+    main_widget/contextmenu.h
 
 SOURCES += \
     content/content.cpp \
@@ -62,5 +63,6 @@ SOURCES += \
     widget_types/date.cpp \
     widget_types/run_string.cpp \
     widget_types/settings_window.cpp \
-    structes/structes.cpp
+    structes/structes.cpp \
+    main_widget/contextmenu.cpp
 

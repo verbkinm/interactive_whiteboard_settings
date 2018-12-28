@@ -10,5 +10,9 @@
         <file>img/previos_push.png</file>
         <file>img/next_push.png</file>
         <file>img/settings_button.png</file>
+        <file alias="minus">img/minus.png</file>
+        <file alias="plus">img/plus.png</file>
+        <file alias="exit">img/exit.png</file>
+        <file alias="list">img/list.png</file>
     </qresource>
 </RCC>

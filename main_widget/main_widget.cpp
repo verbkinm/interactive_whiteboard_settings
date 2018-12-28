@@ -7,9 +7,10 @@
 #include <QEvent>
 #include <QTextCodec>
 
+
 Main_Widget::Main_Widget()
-    : QWidget(),   generals_settings("LYCEUM","interactive_whiteboard_generals"), \
-                   widget_settings("LYCEUM","interactive_whiteboard_widgets")
+    : QWidget(),   generals_settings(QSettings::IniFormat, QSettings::UserScope, "LYCEUM","interactive_whiteboard_generals"), \
+                   widget_settings(QSettings::IniFormat, QSettings::UserScope, "LYCEUM","interactive_whiteboard_widgets")
 
 {
     addMyWidgets();
@@ -81,13 +82,13 @@ QStringList Main_Widget::getMiniWidgetStringList(QList<Mini_Widget *>)
 }
 void Main_Widget::addMyWidgets()
 {
-    generals_settings.setIniCodec("utf8");
-    widget_settings.setIniCodec("utf8");
+//    generals_settings.setIniCodec("utf8");
+//    widget_settings.setIniCodec("utf8");
 
     QStringList groups = widget_settings.childGroups();
 
-    foreach (QString obejectName, groups) {
-        widget_settings.beginGroup(obejectName);
+    foreach (QString objectName, groups) {
+        widget_settings.beginGroup(objectName);
 
 // структура рамки для мини виджета
         struct_settingsMiniWidget = new settingsMiniWidget;
@@ -119,7 +120,7 @@ void Main_Widget::addMyWidgets()
         struct_settingsMiniWidget->background.backgroundColor   = widget_settings.value("backgroundColor", "black").toString();
         struct_settingsMiniWidget->background.backgroundImage   = generals_settings.value("Generals/backgoundImage", ":img/school2").toString();
 
-        struct_settingsMiniWidget->text.textColor               = widget_settings.value("textColor", "black").toString();
+        struct_settingsMiniWidget->text.textColor               = widget_settings.value("textColor", "green").toString();
         struct_settingsMiniWidget->text.textSize                = widget_settings.value("textSize", 12).toInt();
         struct_settingsMiniWidget->text.titleText               = widget_settings.value("title", "\0").toString();
 
@@ -128,6 +129,7 @@ void Main_Widget::addMyWidgets()
         struct_settingsMiniWidget->path.iconPath                = widget_settings.value("iconPath", ":img/logo").toString();
         struct_settingsMiniWidget->path.txtPath                 = widget_settings.value("txtPath", "").toString();
 
+        struct_settingsMiniWidget->widgetName                   = objectName;
 
         widget_settings.endGroup();
 
@@ -135,7 +137,9 @@ void Main_Widget::addMyWidgets()
 
         struct_settingsMiniWidget->size = QSize(struct_settingsMiniWidget->rect.width(), struct_settingsMiniWidget->rect.height());
         addMyWidget(struct_settingsMiniWidget, \
-                    obejectName);
+                    objectName);
+
+        delete struct_settingsMiniWidget;
     }
 }
 void Main_Widget::addMyWidget(settingsMiniWidget *struct_settingsMiniWidget, \
@@ -159,10 +163,17 @@ void Main_Widget::addMyWidget(settingsMiniWidget *struct_settingsMiniWidget, \
         pmini->move(struct_settingsMiniWidget->rect.x(), struct_settingsMiniWidget->rect.y());
     }
 
+//    qDebug() << objectName << struct_settingsMiniWidget->miscellanea.type;
+
 }
 void Main_Widget::slotSaveSettings(settingsMiniWidget &settingsWindow)
 {
-    widget_settings.beginGroup(sender()->objectName());
+    if(sender()->objectName() != settingsWindow.widgetName)
+    {
+        widget_settings.remove(sender()->objectName());
+    }
+
+    widget_settings.beginGroup(settingsWindow.widgetName);
 
     widget_settings.setValue("x", settingsWindow.rect.x());
     widget_settings.setValue("y", settingsWindow.rect.y());
@@ -173,6 +184,8 @@ void Main_Widget::slotSaveSettings(settingsMiniWidget &settingsWindow)
     widget_settings.setValue("borderRGBA", settingsWindow.border.borderColor);
     widget_settings.setValue("borderClickWidth", settingsWindow.border.borderClickWidth);
     widget_settings.setValue("borderClickRGBA", settingsWindow.border.borderClickColor);
+
+    widget_settings.setValue("type", settingsWindow.miscellanea.type);
 
     widget_settings.setValue("dynamicMiniWidget", settingsWindow.miscellanea.dynamicMiniWidget);
     widget_settings.setValue("dynamicMiniWidgetTimer", settingsWindow.miscellanea.dynamicMiniWidgetTimer);
@@ -190,8 +203,40 @@ void Main_Widget::slotSaveSettings(settingsMiniWidget &settingsWindow)
     widget_settings.setValue("iconPath", settingsWindow.path.iconPath);
     widget_settings.setValue("txtPath", settingsWindow.path.txtPath);
 
+//    widget_settings.setValue("widgetName", settingsWindow.widgetName);
+
     widget_settings.endGroup();
 
+}
+void Main_Widget::slotCreateNewWidget()
+{
+    qDebug() << "slotNewWidget";
+    struct_settingsMiniWidget = new settingsMiniWidget;
+
+    addMyWidget(struct_settingsMiniWidget, struct_settingsMiniWidget->widgetName);
+
+    delete struct_settingsMiniWidget;
+}
+void Main_Widget::showContextMenu()
+{
+    if(pMenu == nullptr)
+    {
+        pMenu = new ContextMenu(this);
+        connect(pMenu, SIGNAL(signalNewWidget()), this, SLOT(slotCreateNewWidget()));
+
+        if( pMenu->exec(QCursor::pos()) )
+            deleteContextMenu();
+    }
+    else
+        deleteContextMenu();
+
+}
+void Main_Widget::deleteContextMenu()
+{
+//    disconnect(pMenu, SIGNAL(signalNewWidget()), this, SLOT(slotCreateNewWidget));
+    pMenu->close();
+    delete pMenu;
+    pMenu = nullptr;
 }
 bool Main_Widget::event(QEvent *event)
 {
@@ -201,9 +246,16 @@ bool Main_Widget::event(QEvent *event)
         foreach (Mini_Widget* pmini, list_miniWidgets)
         {
             if( !(pmini->geometry().contains(this->mapFromGlobal(QCursor::pos()))) )
+            {
                 pmini->hideSettingsButton();
+                showContextMenu();
+            }
         }
+        if(list_miniWidgets.length() == 0)
+            showContextMenu();
+
     }
+
     return QWidget::event(event);
 }
 void Main_Widget::paintEvent(QPaintEvent*)
@@ -219,6 +271,6 @@ Main_Widget::~Main_Widget()
 {
     if(pmini != nullptr)
         delete pmini;
-    if(struct_settingsMiniWidget != nullptr)
-        delete struct_settingsMiniWidget;
+//    if(struct_settingsMiniWidget != nullptr)
+//        delete struct_settingsMiniWidget;
 }

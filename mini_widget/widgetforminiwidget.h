@@ -18,7 +18,7 @@ class WidgetForMiniWidget : public QWidget
 
 public:
     WidgetForMiniWidget(settingsMiniWidget *struct_settingsMiniWidget, \
-                        QWidget *parent = 0);
+                        QWidget *parent = nullptr);
     ~WidgetForMiniWidget();
 
     int getCurrentPage();
@@ -26,6 +26,8 @@ public:
     void            dynamicWidget();
 
     void            create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget);
+
+    void            addMainWidget(QWidget* widget);
 
 private:
     settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;

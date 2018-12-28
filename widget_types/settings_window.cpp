@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QColorDialog>
 
 Settings_window::Settings_window(const settingsMiniWidget &struct_settingsMiniWidget, QWidget *parent) :
     QDialog(parent),
@@ -33,6 +34,9 @@ Settings_window::Settings_window(const settingsMiniWidget &struct_settingsMiniWi
     connect(ui->borderClick_width, SIGNAL(valueChanged(int)), this, SLOT(slotChange()) );
     connect(ui->borderClick_color, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
 
+    connect(ui->widgetName, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
+    connect(ui->type_list, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotChange()) );
+
     connect(ui->iconPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
     connect(ui->dirPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
     connect(ui->txtPath, SIGNAL(textChanged(QString)), this, SLOT(slotChange()) );
@@ -49,6 +53,7 @@ Settings_window::Settings_window(const settingsMiniWidget &struct_settingsMiniWi
 
 //указатель на переданную структуру
     pSettingsMiniWidget = &struct_settingsMiniWidget;
+    settingsMiniWidgetCopy = *pSettingsMiniWidget;
 
 //установка значений из настроек
     setValues();
@@ -75,6 +80,11 @@ int Settings_window::getType(QString typeStr)
         return BORDERCLICK_WIDTH;
     else if( typeStr == "borderClick_color")
         return BORDERCLICK_COLOR;
+
+    else if( typeStr == "type_list")
+        return WIDGET_TYPE;
+    else if( typeStr == "widgetName")
+        return WIDGET_NAME;
 
     else if( typeStr == "iconPath")
         return ICON_PATH;
@@ -135,8 +145,17 @@ void Settings_window::slotChange()
         emit signal_Change_Settings(BORDERCLICK_WIDTH, QVariant(ui->borderClick_width->value()));
         break;
     case BORDERCLICK_COLOR:
-        settingsMiniWidgetCopy.border.borderClickColor= ui->borderClick_color->text();
+        settingsMiniWidgetCopy.border.borderClickColor = ui->borderClick_color->text();
         emit signal_Change_Settings(BORDERCLICK_COLOR, QVariant(ui->borderClick_color->text()));
+        break;
+
+    case WIDGET_TYPE:
+        settingsMiniWidgetCopy.miscellanea.type = ui->type_list->currentText();
+        emit signal_Change_Settings(WIDGET_TYPE, QVariant( ui->type_list->currentText()));
+        break;
+    case WIDGET_NAME:
+        settingsMiniWidgetCopy.widgetName = ui->widgetName->text();
+        emit signal_Change_Settings(WIDGET_NAME, QVariant(ui->widgetName->text()));
         break;
 
     case ICON_PATH:
@@ -272,6 +291,7 @@ void Settings_window::setValues()
 
 //тип
     ui->type_list->setCurrentText(pSettingsMiniWidget->miscellanea.type);
+    ui->widgetName->setText(pSettingsMiniWidget->widgetName);
 
 //путь
     ui->iconPath->setText(pSettingsMiniWidget->path.iconPath);
@@ -319,14 +339,13 @@ void Settings_window::on_actionBorderColor_triggered()
     QString colorTxt;
 
     if(sender()->objectName() == "border_setColor")
-       colorTxt = ui->border_color->text();
+        colorTxt = ui->border_color->text();
     else if(sender()->objectName() == "borderClick_setColor")
         colorTxt = ui->borderClick_color->text();
 
     QColor color = QColorDialog::getColor(toColor(colorTxt), \
                                           this, \
-                                          "Выбор цвета", \
-                                          QColorDialog::ShowAlphaChannel);
+                                          "Выбор цвета");
     if ( color.isValid() ){
         QString result = "rgba(" + QString::number(color.red()) + \
                         "," + QString::number(color.green()) + \

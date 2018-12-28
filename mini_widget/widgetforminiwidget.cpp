@@ -12,10 +12,12 @@ WidgetForMiniWidget::WidgetForMiniWidget(settingsMiniWidget *struct_settingsMini
 void WidgetForMiniWidget::create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget)
 {
     pStruct_settingsMiniWidget = struct_settingsMiniWidget;
-    this->setFixedSize(pStruct_settingsMiniWidget->size);
+    this->resize(pStruct_settingsMiniWidget->size);
 
-    if(layout == nullptr)
+    if(layout == nullptr){
         layout      = new QVBoxLayout;
+        layout->setMargin(0);
+    }
 
     if(title == nullptr)
         title       = new QLabel("Title");
@@ -28,7 +30,6 @@ void WidgetForMiniWidget::create_or_recreate_object(settingsMiniWidget *struct_s
         leafer      = new Leafer(pStruct_settingsMiniWidget->text.textSize);
     else
         leafer->setTextSize(pStruct_settingsMiniWidget->text.textSize);
-
 
     layout->addWidget(title, 0, Qt::AlignHCenter);
     layout->addWidget(image, 2);
@@ -52,6 +53,12 @@ void WidgetForMiniWidget::create_or_recreate_object(settingsMiniWidget *struct_s
     timer.setInterval(pStruct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer*1000);
 
     dynamicWidget();
+}
+
+void WidgetForMiniWidget::addMainWidget(QWidget *widget)
+{
+    image->hide();
+    layout->addWidget(widget);
 }
 void WidgetForMiniWidget::dynamicWidget()
 {
