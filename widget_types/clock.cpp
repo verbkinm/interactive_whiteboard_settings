@@ -8,8 +8,16 @@ Clock::Clock(QString textColor, QString backgroundColor, QWidget *parent) : QLCD
 {
     create_or_recreate_object(textColor, backgroundColor);
 }
+
+Clock::~Clock()
+{
+    delete timer;
+}
 void Clock::create_or_recreate_object(QString textColor, QString backgroundColor)
 {
+    this->backgroundColor   = backgroundColor;
+    this->textColor         = textColor;
+
     this->setSegmentStyle(QLCDNumber::Flat);
     if(timer == nullptr)
         timer = new QTimer(this);
@@ -22,6 +30,20 @@ void Clock::create_or_recreate_object(QString textColor, QString backgroundColor
     display(QTime::currentTime().toString("hh:mm"));
 
     this->setStyleSheet("background-color: " + backgroundColor + ";color: " + textColor + ";");
+}
+
+void Clock::setTextStyle(QMap<QString, QVariant> map)
+{
+    QString styleSheet = "background-color: %1; color: %2;";
+    this->setStyleSheet( styleSheet.arg(backgroundColor, map["textColor"].toString()) );
+    textColor = map["textColor"].toString();
+}
+
+void Clock::setBackgroundStyle(QString background)
+{
+    QString styleSheet = "background-color: %1; color: %2;";
+    this->setStyleSheet( styleSheet.arg(background, textColor) );
+    backgroundColor = background;
 }
 void Clock::slotShowTime()
 {

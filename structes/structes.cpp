@@ -3,7 +3,7 @@
 int getType(QString typeStr)
 {
     if( typeStr == "label" )
-        return  TYPE_WIDGETS::LABEL;
+        return  LABEL;
     else if( typeStr == "clock" )
         return CLOCK;
     else if( typeStr == "date" )

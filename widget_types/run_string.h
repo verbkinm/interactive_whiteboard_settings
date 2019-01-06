@@ -3,6 +3,8 @@
 
 #include <QLabel>
 #include <QTimer>
+#include <QMap>
+#include <QVariant>
 
 class Run_String : public QLabel
 {
@@ -13,13 +15,20 @@ public:
 
     void create_or_recreate_object(QString textColor, int textSize, QString backgroundColor, QString text, int speed);
 
+    void setTextStyle(QMap<QString, QVariant> map);
+    void setBackgroundStyle(QString background);
+    void setSpeed(int speed);
+    void setText(QString text);
+
 protected:
-    virtual void paintEvent(QPaintEvent*event);
+    virtual void paintEvent(QPaintEvent*);
 
 private:
     int x, x_end;
     int stringLenght;
     QTimer timer;
+
+    QString textColor, backgroundColor, textSize;
 
     QString str, str_tail;
     QFont *font = nullptr;

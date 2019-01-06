@@ -1,16 +1,12 @@
 #ifndef MINI_WIDGET_H
 #define MINI_WIDGET_H
 
-#include "widget_types/schedule.h"
-#include "widget_types/myWidgets/viewer/viewer.h"
 #include "widget_types/clock.h"
 #include "widget_types/date.h"
 #include "widget_types/run_string.h"
 #include "widgetforminiwidget.h"
-#include "../widget_types/settings_window.h"
+#include "../widget_types/settings/settings_window.h"
 
-
-#include "content/content.h"
 #include "structes/structes.h"
 
 #include <QWidget>
@@ -44,31 +40,29 @@ private:
     void createDontClickWidget();
 
 
-// создание кнопки настроек
+// создание кнопки настроек и кнопки удаления
     void createSettingsButton();
+
+    QString txtFileToString(QString filePath);
 
     WidgetForMiniWidget *centralWidgetForMiniWidget = nullptr;
 
 //    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
 //рамка
-    QWidget*                 border          = nullptr;
+    QWidget                border;
 //рамка, которая будет появлятся при нажатии
-    Mini_Widget*                 borderClick     = this;
-// кнопка настроек
-    QPushButton*            buttonSettings  = nullptr;
+    Mini_Widget*            borderClick     = this;
+
+// панель дополнительных действий при нажатии на виджет
+    QWidget                 onClickWidget;
+    QPushButton             buttonSettings, buttonDeleteWidget;
+    QGridLayout             onClickWidgetLayout;
+
 // структура настроек для мини виджета
-    settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;
+    settingsMiniWidget mainStruct_settingsMiniWidget;
 
-    QVBoxLayout*            borderClickLayout      = nullptr;
-    QVBoxLayout*            borderLayout           = nullptr;
-
-// указатель для анимаций
-//    QPropertyAnimation* panimOpen           = nullptr;
-
-//центральная миниатюра
-    QLabel*                 centralLabel    = nullptr;
-//указатель на содержимое мини виджета, всё что открывается - находится в контейнере класса Content
-//    Content*                pContent        = nullptr;
+    QVBoxLayout            borderClickLayout;
+    QVBoxLayout            borderLayout;
 
 //нужно для перевода типа виджета из QString в enum TYPE_WIDGETS
     int                     type            = -1;
@@ -93,11 +87,13 @@ protected:
 signals:
 //сохранить настройки
     void signalSaveSettings(settingsMiniWidget &settingsWindow);
+    void signalDeleteWidget();
 
 private slots:
 
 
     void slotSettingsButtonClicked();
+    void slotDeleteButtonClicked();
 
     //реагирование на изменение в окне настроек
     void slotSettingsChange(int objectName, QVariant data);

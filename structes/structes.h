@@ -12,17 +12,20 @@ int getType(QString typeStr);
 
 struct border
 {
-    QString borderColor         = "black";  // цвет рамки
-    QString borderClickColor    = "white";  // цвет появляющийся рамки при нажатии
+    QString borderColor         = "#ffffff";  // цвет рамки
+    QString borderClickColor    = "#ff0000";  // цвет появляющийся рамки при нажатии
     int borderWidth             = 10;       // ширина рамки
-    int borderClickWidth        = 10;       // ширина появляющийся рамки при нажатии
+    int borderClickWidth        = 15;       // ширина появляющийся рамки при нажатии
 };
 
 struct text
 {
-    QString textColor           = "black";  // цвет текста
-    QString titleText           = "title";     // текст заголовка
+    QString textColor           = "#ffffff";  // цвет текста
     int textSize                = 12;       // размер шрифта
+
+    QString titleColor          = "#ffffff";  // цвет текста
+    QString titleText           = "title";     // текст заголовка
+    int titleTextSize           = 12;       // размер шрифта заголовка
 };
 
 struct path
@@ -35,7 +38,7 @@ struct path
 
 struct background
 {
-    QString backgroundColor     = "\0";  // цвет фона
+    QString backgroundColor     = "#ffffff";  // цвет фона
     QString backgroundImage     = "\0";     // картинка фона
 };
 
@@ -45,7 +48,7 @@ struct miscellanea
     QString datePattern             = "dd-mm-yy"; // шаблон отображения даты для виджета Date
     int     timerSec                = 0;    //таймер, по которому закрывается виджет - остаётся только главное окно
     bool    dynamicMiniWidget       = false;//является ли виджет динамическим - виджет с заголовком и меняющимися изображениями, а так же с кнопками вперед и назад
-    int     dynamicMiniWidgetTimer  = 0;    //таймер для автоматической смены изображений у dynamicMiniWidget
+    int     dynamicMiniWidgetTimer  = 1;    //таймер для автоматической смены изображений у dynamicMiniWidget
     int     speed                   = -1;
 };
 
@@ -58,10 +61,16 @@ struct settingsMiniWidget
     struct miscellanea  miscellanea;
     QRect               rect = QRect(0,0, 100,100);
     QSize               size = QSize(100, 100);
-//    QPoint              point = rect.topLeft();
     QString             widgetName = "new Widget";
     int (*pGetType)(QString) = getType;
+};
 
+struct settingsGeneral
+{
+    struct background   background;
+    uint                timerSec;
+    bool                fullScreen;
+    bool                showCursor;
 };
 
 #endif // STRUCTES_H

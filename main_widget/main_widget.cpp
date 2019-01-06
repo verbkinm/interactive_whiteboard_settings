@@ -1,36 +1,36 @@
 #include "main_widget.h"
+#include "../widget_types/settings/generalssettings_window.h"
 
 #include <QFile>
 #include <QPainter>
-
 #include <QDebug>
-#include <QEvent>
-#include <QTextCodec>
+#include <QApplication>
 
 
 Main_Widget::Main_Widget()
-    : QWidget(),   generals_settings(QSettings::IniFormat, QSettings::UserScope, "LYCEUM","interactive_whiteboard_generals"), \
-                   widget_settings(QSettings::IniFormat, QSettings::UserScope, "LYCEUM","interactive_whiteboard_widgets")
+    : QWidget(),   generals_settings(QSettings::IniFormat, QSettings::UserScope, "INTERACTIVE_WHITEBOARD","interactive_whiteboard_generals"), \
+                   widget_settings(QSettings::IniFormat, QSettings::UserScope, "INTERACTIVE_WHITEBOARD","interactive_whiteboard_widgets")
 
 {
+    generalSettings();
     addMyWidgets();
-
-    watcher.addPath(widget_settings.fileName());
-    connect(&watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChange()));
 }
 void Main_Widget::slotFileChange()
 {
     watcher.addPath(widget_settings.fileName());
+    watcher.addPath(generals_settings.fileName());
     widget_settings.sync();
+    generals_settings.sync();
 
     foreach (QString str, getMiniWidgetRemoveList(getMiniWidgetStringList(list_miniWidgets), widget_settings.childGroups()))
         if( getMiniWidgetIndex(str) != -1)
         {
             Mini_Widget* miniWidget = list_miniWidgets.at(getMiniWidgetIndex(str));
-            miniWidget->~Mini_Widget();
             list_miniWidgets.removeAt(getMiniWidgetIndex(str));
+            delete miniWidget;
         }
 
+//    pmini = nullptr;
     addMyWidgets();
 }
 int Main_Widget::getMiniWidgetIndex(QString objectName)
@@ -72,6 +72,15 @@ QStringList Main_Widget::getMiniWidgetAddList(QStringList objectNameList, QStrin
 
     return toAdd;
 }
+
+bool Main_Widget::cursorOnMiniWidget()
+{
+    foreach (Mini_Widget* pmini, list_miniWidgets)
+        if( pmini->geometry().contains(this->mapFromGlobal(QCursor::pos())) )
+            return true;
+
+    return false;
+}
 QStringList Main_Widget::getMiniWidgetStringList(QList<Mini_Widget *>)
 {
     QStringList listObjectNames;
@@ -82,58 +91,48 @@ QStringList Main_Widget::getMiniWidgetStringList(QList<Mini_Widget *>)
 }
 void Main_Widget::addMyWidgets()
 {
-//    generals_settings.setIniCodec("utf8");
-//    widget_settings.setIniCodec("utf8");
-
     QStringList groups = widget_settings.childGroups();
 
     foreach (QString objectName, groups) {
         widget_settings.beginGroup(objectName);
 
-// структура рамки для мини виджета
+// структура настроек для мини виджета
         struct_settingsMiniWidget = new settingsMiniWidget;
-//        border struct_border;
-//        text struct_text;
-//        path struct_path;
-//        background struct_background;
-//        miscellanea struct_miscellanea;
-
-//rectangle для мини виджета
 
         struct_settingsMiniWidget->rect.setX(widget_settings.value("x", 10).toInt());
         struct_settingsMiniWidget->rect.setY(widget_settings.value("y", 10).toInt());
-        struct_settingsMiniWidget->rect.setWidth(widget_settings.value("width", 50).toInt());
-        struct_settingsMiniWidget->rect.setHeight(widget_settings.value("height", 50).toInt());
+        struct_settingsMiniWidget->rect.setWidth(widget_settings.value("width", 100).toInt());
+        struct_settingsMiniWidget->rect.setHeight(widget_settings.value("height", 100).toInt());
 
         struct_settingsMiniWidget->border.borderWidth           = widget_settings.value("borderWidth", 10).toInt();
-        struct_settingsMiniWidget->border.borderColor           = widget_settings.value("borderRGBA", "balck").toString();
+        struct_settingsMiniWidget->border.borderColor           = widget_settings.value("borderRGBA", "#ffffffff").toString();
         struct_settingsMiniWidget->border.borderClickWidth      = widget_settings.value("borderClickWidth", 10).toInt();
-        struct_settingsMiniWidget->border.borderClickColor      = widget_settings.value("borderClickRGBA", "black").toString();
+        struct_settingsMiniWidget->border.borderClickColor      = widget_settings.value("borderClickRGBA", "#ff000000").toString();
 
         struct_settingsMiniWidget->miscellanea.type             = widget_settings.value("type", "label").toString();
         struct_settingsMiniWidget->miscellanea.timerSec         = generals_settings.value("Generals/timerSec", 30).toInt();
         struct_settingsMiniWidget->miscellanea.dynamicMiniWidget= widget_settings.value("dynamicMiniWidget", false).toBool();
-        struct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer= widget_settings.value("dynamicMiniWidgetTimer", 0).toInt();
-        struct_settingsMiniWidget->miscellanea.datePattern      = widget_settings.value("datePattern", "dd-mm-yy").toString();
+        struct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer= widget_settings.value("dynamicMiniWidgetTimer", 1).toInt();
+        struct_settingsMiniWidget->miscellanea.datePattern      = widget_settings.value("datePattern", "dd-MM-yy").toString();
         struct_settingsMiniWidget->miscellanea.speed            = widget_settings.value("speed", "-1").toInt();
 
-        struct_settingsMiniWidget->background.backgroundColor   = widget_settings.value("backgroundColor", "black").toString();
+        struct_settingsMiniWidget->background.backgroundColor   = widget_settings.value("backgroundColor", "#ff000000").toString();
         struct_settingsMiniWidget->background.backgroundImage   = generals_settings.value("Generals/backgoundImage", ":img/school2").toString();
 
-        struct_settingsMiniWidget->text.textColor               = widget_settings.value("textColor", "green").toString();
+        struct_settingsMiniWidget->text.textColor               = widget_settings.value("textColor", "#ff000000").toString();
         struct_settingsMiniWidget->text.textSize                = widget_settings.value("textSize", 12).toInt();
         struct_settingsMiniWidget->text.titleText               = widget_settings.value("title", "\0").toString();
+        struct_settingsMiniWidget->text.titleTextSize           = widget_settings.value("titleSize", 12).toInt();
+        struct_settingsMiniWidget->text.titleColor              = widget_settings.value("titleColor", "#ff000000").toString();
 
         struct_settingsMiniWidget->path.dirPath                 = widget_settings.value("dirPath", "\0").toString();
         struct_settingsMiniWidget->path.xmlPath                 = widget_settings.value("xmlPath", "\0").toString();
-        struct_settingsMiniWidget->path.iconPath                = widget_settings.value("iconPath", ":img/logo").toString();
+        struct_settingsMiniWidget->path.iconPath                = widget_settings.value("iconPath", ":img/school2").toString();
         struct_settingsMiniWidget->path.txtPath                 = widget_settings.value("txtPath", "").toString();
 
         struct_settingsMiniWidget->widgetName                   = objectName;
 
         widget_settings.endGroup();
-
-//        qDebug() << str << struct_miscellanea.dynamicMiniWidget;
 
         struct_settingsMiniWidget->size = QSize(struct_settingsMiniWidget->rect.width(), struct_settingsMiniWidget->rect.height());
         addMyWidget(struct_settingsMiniWidget, \
@@ -155,6 +154,7 @@ void Main_Widget::addMyWidget(settingsMiniWidget *struct_settingsMiniWidget, \
         list_miniWidgets.append(pmini);
 
         connect(pmini, SIGNAL(signalSaveSettings(settingsMiniWidget&)), this, SLOT(slotSaveSettings(settingsMiniWidget&)));
+        connect(pmini, SIGNAL(signalDeleteWidget()), this, SLOT(slotDeleteWidget()));
     }
     else
     {
@@ -163,114 +163,167 @@ void Main_Widget::addMyWidget(settingsMiniWidget *struct_settingsMiniWidget, \
         pmini->move(struct_settingsMiniWidget->rect.x(), struct_settingsMiniWidget->rect.y());
     }
 
-//    qDebug() << objectName << struct_settingsMiniWidget->miscellanea.type;
+    pmini = nullptr;
+}
 
+void Main_Widget::settingSetValues(settingsMiniWidget *struct_settingsMiniWidget)
+{
+    widget_settings.beginGroup(struct_settingsMiniWidget->widgetName);
+
+    widget_settings.setValue("x", struct_settingsMiniWidget->rect.x());
+    widget_settings.setValue("y", struct_settingsMiniWidget->rect.y());
+    widget_settings.setValue("width", struct_settingsMiniWidget->size.width());
+    widget_settings.setValue("height", struct_settingsMiniWidget->size.height());
+
+    widget_settings.setValue("borderWidth", struct_settingsMiniWidget->border.borderWidth);
+    widget_settings.setValue("borderRGBA", struct_settingsMiniWidget->border.borderColor);
+    widget_settings.setValue("borderClickWidth", struct_settingsMiniWidget->border.borderClickWidth);
+    widget_settings.setValue("borderClickRGBA", struct_settingsMiniWidget->border.borderClickColor);
+
+    widget_settings.setValue("type", struct_settingsMiniWidget->miscellanea.type);
+
+    widget_settings.setValue("dynamicMiniWidget", struct_settingsMiniWidget->miscellanea.dynamicMiniWidget);
+    widget_settings.setValue("dynamicMiniWidgetTimer", struct_settingsMiniWidget->miscellanea.dynamicMiniWidgetTimer);
+    widget_settings.setValue("datePattern", struct_settingsMiniWidget->miscellanea.datePattern);
+    widget_settings.setValue("speed", struct_settingsMiniWidget->miscellanea.speed);
+
+    widget_settings.setValue("textSize", struct_settingsMiniWidget->text.textSize);
+    widget_settings.setValue("textColor", struct_settingsMiniWidget->text.textColor);
+
+    widget_settings.setValue("title", struct_settingsMiniWidget->text.titleText);
+    widget_settings.setValue("titleSize", struct_settingsMiniWidget->text.titleTextSize);
+    widget_settings.setValue("titleColor", struct_settingsMiniWidget->text.titleColor);
+
+    widget_settings.setValue("backgroundColor", struct_settingsMiniWidget->background.backgroundColor);
+
+    widget_settings.setValue("dirPath", struct_settingsMiniWidget->path.dirPath);
+    widget_settings.setValue("xmlPath", struct_settingsMiniWidget->path.xmlPath);
+    widget_settings.setValue("iconPath", struct_settingsMiniWidget->path.iconPath);
+    widget_settings.setValue("txtPath", struct_settingsMiniWidget->path.txtPath);
+
+    widget_settings.endGroup();
 }
 void Main_Widget::slotSaveSettings(settingsMiniWidget &settingsWindow)
 {
     if(sender()->objectName() != settingsWindow.widgetName)
-    {
         widget_settings.remove(sender()->objectName());
-    }
 
-    widget_settings.beginGroup(settingsWindow.widgetName);
+    settingSetValues(&settingsWindow);
+}
 
-    widget_settings.setValue("x", settingsWindow.rect.x());
-    widget_settings.setValue("y", settingsWindow.rect.y());
-    widget_settings.setValue("width", settingsWindow.size.width());
-    widget_settings.setValue("height", settingsWindow.size.height());
-
-    widget_settings.setValue("borderWidth", settingsWindow.border.borderWidth);
-    widget_settings.setValue("borderRGBA", settingsWindow.border.borderColor);
-    widget_settings.setValue("borderClickWidth", settingsWindow.border.borderClickWidth);
-    widget_settings.setValue("borderClickRGBA", settingsWindow.border.borderClickColor);
-
-    widget_settings.setValue("type", settingsWindow.miscellanea.type);
-
-    widget_settings.setValue("dynamicMiniWidget", settingsWindow.miscellanea.dynamicMiniWidget);
-    widget_settings.setValue("dynamicMiniWidgetTimer", settingsWindow.miscellanea.dynamicMiniWidgetTimer);
-    widget_settings.setValue("datePattern", settingsWindow.miscellanea.datePattern);
-    widget_settings.setValue("speed", settingsWindow.miscellanea.speed);
-
-//    widget_settings.setValue("backgroundColor", settingsWindow.miscellanea.datePattern);
-
-//    widget_settings.setValue("textColor", settingsWindow.text.);
-    widget_settings.setValue("textSize", settingsWindow.text.textSize);
-    widget_settings.setValue("title", settingsWindow.text.titleText);
-
-    widget_settings.setValue("dirPath", settingsWindow.path.dirPath);
-    widget_settings.setValue("xmlPath", settingsWindow.path.xmlPath);
-    widget_settings.setValue("iconPath", settingsWindow.path.iconPath);
-    widget_settings.setValue("txtPath", settingsWindow.path.txtPath);
-
-//    widget_settings.setValue("widgetName", settingsWindow.widgetName);
-
-    widget_settings.endGroup();
-
+void Main_Widget::slotDeleteWidget()
+{
+    widget_settings.remove(sender()->objectName());
 }
 void Main_Widget::slotCreateNewWidget()
 {
-    qDebug() << "slotNewWidget";
     struct_settingsMiniWidget = new settingsMiniWidget;
 
     addMyWidget(struct_settingsMiniWidget, struct_settingsMiniWidget->widgetName);
+    settingSetValues(struct_settingsMiniWidget);
 
     delete struct_settingsMiniWidget;
 }
-void Main_Widget::showContextMenu()
+void Main_Widget::slotShowContextMenu()
 {
-    if(pMenu == nullptr)
-    {
-        pMenu = new ContextMenu(this);
-        connect(pMenu, SIGNAL(signalNewWidget()), this, SLOT(slotCreateNewWidget()));
+    pMenu->exec(QCursor::pos());
+    circleClike.close();
+}
 
-        if( pMenu->exec(QCursor::pos()) )
-            deleteContextMenu();
+void Main_Widget::slotGeneralSettings()
+{
+    GeneralsSettings_window *pGeneralsSettings_window = new GeneralsSettings_window(generals_settings.value("Generals/backgoundImage", ":img/school2").toString(), \
+                                                                                    uint(generals_settings.value("Generals/timerSec", 30).toInt()) );
+
+    connect(pGeneralsSettings_window, SIGNAL(signalBackgroundChancged(QString)), this, SLOT(slotBackgroundChanged(QString)) );
+
+    if (pGeneralsSettings_window->exec()  ==   QDialog::Accepted){
+        generals_settings.setValue("Generals/timerSec", pGeneralsSettings_window->getTimerSec() );
+        generals_settings.setValue("Generals/backgoundImage", pGeneralsSettings_window->getBackgroundPath() );
     }
     else
-        deleteContextMenu();
+    {
+        slotBackgroundChanged(generals_settings.value("Generals/backgoundImage", "").toString() );
+    }
 
+    delete pGeneralsSettings_window;
 }
-void Main_Widget::deleteContextMenu()
+
+void Main_Widget::slotBackgroundChanged(QString background)
 {
-//    disconnect(pMenu, SIGNAL(signalNewWidget()), this, SLOT(slotCreateNewWidget));
-    pMenu->close();
-    delete pMenu;
-    pMenu = nullptr;
+    QPixmap bkgnd(background);
+
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, bkgnd);
+    this->setPalette(palette);
 }
 bool Main_Widget::event(QEvent *event)
 {
 //    qDebug() << event->type();
-    if(event->type() == QEvent::MouseButtonRelease)
-    {
+    if(event->type() == QEvent::MouseButtonRelease){
         foreach (Mini_Widget* pmini, list_miniWidgets)
-        {
-            if( !(pmini->geometry().contains(this->mapFromGlobal(QCursor::pos()))) )
-            {
-                pmini->hideSettingsButton();
-                showContextMenu();
-            }
-        }
-        if(list_miniWidgets.length() == 0)
-            showContextMenu();
+            if(pmini != nullptr)
+                if( !(pmini->geometry().contains(this->mapFromGlobal(QCursor::pos()))) )
+                    pmini->hideSettingsButton();
+        circleClike.close();
+    }
 
+    if(event->type() == QEvent::MouseButtonPress){
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        if( !cursorOnMiniWidget() ) {
+            circleClike.move(mouseEvent->x() - circleClike.width()/2, mouseEvent->y() - circleClike.height()/2 );
+            circleClike.show();
+        }
+    }
+
+    if(event->type() == QEvent::Resize){
+        slotBackgroundChanged(generals_settings.value("Generals/backgoundImage", ":img/school2").toString());
     }
 
     return QWidget::event(event);
-}
-void Main_Widget::paintEvent(QPaintEvent*)
-{
-    QPainter painter(this);
-
-    QPixmap pixMap(generals_settings.value("Generals/backgoundImage", ":img/school2").toString());
-    QPixmap newPix = pixMap.scaled(this->size(), Qt::IgnoreAspectRatio);
-    painter.setBrush(QBrush(Qt::black, newPix));
-    painter.drawRect(this->rect());
 }
 Main_Widget::~Main_Widget()
 {
     if(pmini != nullptr)
         delete pmini;
-//    if(struct_settingsMiniWidget != nullptr)
-//        delete struct_settingsMiniWidget;
+
+    if(pMenu != nullptr)
+        delete pMenu;
+}
+
+void Main_Widget::generalSettings()
+{
+//создать файлы настроек, если они не существуют
+    if( !(QFile::exists(widget_settings.fileName()))){
+        QFile file(widget_settings.fileName());
+        QDir dir;
+        dir.mkdir(QFileInfo(file).path());
+        file.open(QIODevice::Append);
+        file.close();
+    }
+    if( !(QFile::exists(generals_settings.fileName()))){
+        QFile file(generals_settings.fileName());
+        QDir dir;
+        dir.mkdir(QFileInfo(file).path());
+        file.open(QIODevice::Append);
+        file.close();
+    }
+
+    watcher.addPath(widget_settings.fileName());
+    watcher.addPath(generals_settings.fileName());
+
+    connect(&watcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChange()) );
+
+    pMenu = new ContextMenu(this);
+    connect(pMenu, SIGNAL(signalNewWidget()), this, SLOT(slotCreateNewWidget()) );
+    connect(pMenu, SIGNAL(signalGeneralSettings()), this, SLOT(slotGeneralSettings()) );
+
+//при отрисовки полного круга - вызывается контекстное меню
+    circleClike.setParent(this);
+    circleClike.close();
+    connect(&circleClike, SIGNAL(signalCircleEnd()), this, SLOT(slotShowContextMenu()) );
+
+//    qApp->setOverrideCursor(Qt::BlankCursor);
+//    this->showFullScreen();
 }

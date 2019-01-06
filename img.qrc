@@ -2,9 +2,7 @@
     <qresource prefix="/img">
         <file alias="mamont">img/mamont.png</file>
         <file alias="logo">img/logo.png</file>
-        <file alias="school">img/school.jpg</file>
         <file alias="school2">img/school2.jpg</file>
-        <file alias="schedule">img/schedule.jpg</file>
         <file>img/next.png</file>
         <file>img/previos.png</file>
         <file>img/previos_push.png</file>
@@ -14,5 +12,6 @@
         <file alias="plus">img/plus.png</file>
         <file alias="exit">img/exit.png</file>
         <file alias="list">img/list.png</file>
+        <file alias="delete">img/delete.png</file>
     </qresource>
 </RCC>

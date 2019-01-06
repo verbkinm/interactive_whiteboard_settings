@@ -11,6 +11,7 @@
 #include <QEvent>
 #include <QDir>
 #include <QTimer>
+#include <QMap>
 
 class WidgetForMiniWidget : public QWidget
 {
@@ -23,20 +24,30 @@ public:
 
     int getCurrentPage();
 
-    void            dynamicWidget();
+    void            dynamicWidget(QString dirPath, bool state);
 
     void            create_or_recreate_object(settingsMiniWidget *struct_settingsMiniWidget);
 
     void            addMainWidget(QWidget* widget);
+
+    void            setTitleText(QString text);
+
+    void            setTitleStyle(QMap<QString, QVariant> map);
+    void            setStyleMainWidget(QMap<QString, QVariant> map);
+    void            setBackgroundMainWidget(QString background);
+    void            setPatternMainWidget(QString pattern);
+    void            setSpeedMainWidget(int speed);
+
+    void            setIconPath(QString path);
+    void            setDirPath (QString path);
+    void            setText (QString text);
+    void            setTimerInterval(uint interval);
 
 private:
     settingsMiniWidget *pStruct_settingsMiniWidget = nullptr;
 
     QLabel*         title       = nullptr;
     QLabel*         image       = nullptr;
-
-    QPushButton*    previos     = nullptr;
-    QPushButton*    next        = nullptr;
 
     QVBoxLayout*    layout      = nullptr;
 
@@ -47,6 +58,9 @@ private:
     QString         dirPath;
     QDir            dir;
     QStringList     list;
+
+    //указатель на отображаемый виджет, если тип мини виджета такой как (clock, date, run_string и т.д)
+    QWidget*        mainWidget  = nullptr;
 
 // таймер для динамического виджета(где переключаются картинки)
     QTimer          timer;

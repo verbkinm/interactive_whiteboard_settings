@@ -11,14 +11,19 @@ public:
     ContextMenu(QWidget* parent);
     ~ContextMenu();
 
+//    bool isClosed = true;
+
 private:
 
-    QAction *newWidget, *exit, *listWidgets;
+    QAction *newWidget, *exit, *listWidgets, *mainWidgetSettig;
 
-    void createActions();
+    void        createActions();
+
+virtual bool    event               (QEvent *event);
 
 signals:
-    void signalNewWidget();
+    void        signalNewWidget();
+    void        signalGeneralSettings();
 };
 
 #endif // CONTEXTMENU_H

@@ -27,42 +27,42 @@ RESOURCES += \
     img.qrc
 
 FORMS += \
-    widget_types/myWidgets/viewer/viewer.ui \
     widget_types/leafer.ui \
-    widget_types/settings_window.ui
+    widget_types/settings/settings_window.ui \
+    widget_types/settings/setcolorrgba.ui \
+    widget_types/settings/settext.ui \
+    widget_types/settings/generalssettings_window.ui
 
 HEADERS += \
-    content/content.h \
     main_widget/main_widget.h \
     mini_widget/mini_widget.h \
-    widget_types/cell/cell.h \
-    widget_types/myWidgets/viewer/viewer.h \
     widget_types/clock.h \
-    widget_types/schedule.h \
     structes/structes.h \
-    widget_types/myWidgets/fingerslide/fingerslide.h \
     mini_widget/widgetforminiwidget.h \
     widget_types/leafer.h \
     widget_types/date.h \
     widget_types/run_string.h \
-    widget_types/settings_window.h \
-    main_widget/contextmenu.h
+    widget_types/settings/settings_window.h \
+    main_widget/contextmenu.h \
+    widget_types/settings/setcolorrgba.h \
+    widget_types/settings/settext.h \
+    main_widget/circleclick/circleclick.h \
+    widget_types/settings/generalssettings_window.h
 
 SOURCES += \
-    content/content.cpp \
     main_widget/main_widget.cpp \
     mini_widget/mini_widget.cpp \
-    widget_types/cell/cell.cpp \
-    widget_types/myWidgets/viewer/viewer.cpp \
     widget_types/clock.cpp \
-    widget_types/schedule.cpp \
     main.cpp \
-    widget_types/myWidgets/fingerslide/fingerslide.cpp \
     mini_widget/widgetforminiwidget.cpp \
     widget_types/leafer.cpp \
     widget_types/date.cpp \
     widget_types/run_string.cpp \
-    widget_types/settings_window.cpp \
+    widget_types/settings/settings_window.cpp \
     structes/structes.cpp \
-    main_widget/contextmenu.cpp
+    main_widget/contextmenu.cpp \
+    widget_types/settings/setcolorrgba.cpp \
+    widget_types/settings/settext.cpp \
+    main_widget/circleclick/circleclick.cpp \
+    widget_types/settings/generalssettings_window.cpp
 
