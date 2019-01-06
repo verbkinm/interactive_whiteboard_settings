@@ -1,2 +1,1 @@
-# interactive_whiteboard
-# interactive_whiteboard_settings
+программа настроек для приложения interactive_whiteboard
