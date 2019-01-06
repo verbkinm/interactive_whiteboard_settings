@@ -16,6 +16,9 @@ int getType(QString typeStr)
         return IMAGE_VIEWER;
     else if( typeStr == "dont_click" )
         return  DONT_CLICK;
+    else if( typeStr == "bells_monitor" )
+        return  BELLS_MONITOR;
+
 
     return -1;
 }

@@ -433,6 +433,11 @@
            <string>schedule</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>bells_monitor</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>

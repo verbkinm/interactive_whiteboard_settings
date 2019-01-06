@@ -295,6 +295,13 @@ void Settings_window::selectType()
             ui->settings->removeTab(4);
             ui->settings->removeTab(4);
             break;
+        case BELLS_MONITOR:
+            ui->settings->removeTab(3);
+            ui->settings->removeTab(3);
+            ui->settings->removeTab(3);
+            ui->settings->removeTab(3);
+            ui->settings->removeTab(3);
+            break;
 
         default:
             break;
@@ -368,9 +375,6 @@ void Settings_window::setValues()
     ui->horizontalSlider_dynamicMiniWidgetTimer->setEnabled(pSettingsMiniWidget->miscellanea.dynamicMiniWidget ? 1 : 0);
     ui->pattern->setText(pSettingsMiniWidget->miscellanea.datePattern);
     connect(ui->dynamicMiniWidget, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotDynamicMiniWidgetChanged()));
-
-
-
 }
 Settings_window::~Settings_window()
 {

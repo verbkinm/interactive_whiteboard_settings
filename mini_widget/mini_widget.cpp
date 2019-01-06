@@ -46,6 +46,9 @@ void Mini_Widget::create_or_recreate_object(settingsMiniWidget *struct_settingsM
         case DONT_CLICK:
                 createDontClickWidget();
             break;
+        case BELLS_MONITOR:
+                createDontClickWidget();
+            break;
 
         //bells
 
@@ -211,6 +214,11 @@ void Mini_Widget::createImageViewerWidget()
     createLabelWidget();
 }
 void Mini_Widget::createDontClickWidget()
+{
+    createLabelWidget();
+}
+
+void Mini_Widget::createBellsMonitor()
 {
     createLabelWidget();
 }

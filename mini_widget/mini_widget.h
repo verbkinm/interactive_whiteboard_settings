@@ -38,6 +38,7 @@ private:
     void createScheduleWidget();
     void createImageViewerWidget();
     void createDontClickWidget();
+    void createBellsMonitor();
 
 
 // создание кнопки настроек и кнопки удаления
@@ -47,7 +48,6 @@ private:
 
     WidgetForMiniWidget *centralWidgetForMiniWidget = nullptr;
 
-//    enum TYPE_WIDGETS{LABEL, CLOCK, DATE, RUN_STRING, SCHEDULE, IMAGE_VIEWER, DONT_CLICK};
 //рамка
     QWidget                border;
 //рамка, которая будет появлятся при нажатии
