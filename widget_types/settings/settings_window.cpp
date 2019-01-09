@@ -273,11 +273,10 @@ void Settings_window::selectType()
         case SCHEDULE:
             ui->groupBox_dirPath->hide();
             ui->groupBox_txtPath->hide();
-            ui->groupBox_title->hide();
-            ui->titleWidget->hide();
-            ui->settings->removeTab(5);
-            ui->settings->removeTab(5);
-            ui->settings->removeTab(5);
+//            ui->groupBox_title->hide();
+//            ui->titleWidget->hide();
+            ui->settings->removeTab(6);
+            ui->settings->removeTab(6);
             break;
         case IMAGE_VIEWER:
             ui->groupBox_xmlPath->hide();

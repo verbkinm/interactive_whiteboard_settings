@@ -45,7 +45,7 @@ struct background
 struct miscellanea
 {
     QString type                    = "label"; //тип виджета (label, clock, schedule, image_viewer)
-    QString datePattern             = "dd-mm-yy"; // шаблон отображения даты для виджета Date
+    QString datePattern             = "dd-MM-yy"; // шаблон отображения даты для виджета Date
     int     timerSec                = 0;    //таймер, по которому закрывается виджет - остаётся только главное окно
     bool    dynamicMiniWidget       = false;//является ли виджет динамическим - виджет с заголовком и меняющимися изображениями, а так же с кнопками вперед и назад
     int     dynamicMiniWidgetTimer  = 1;    //таймер для автоматической смены изображений у dynamicMiniWidget

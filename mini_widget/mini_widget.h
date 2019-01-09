@@ -64,9 +64,6 @@ private:
     QVBoxLayout            borderClickLayout;
     QVBoxLayout            borderLayout;
 
-//нужно для перевода типа виджета из QString в enum TYPE_WIDGETS
-    int                     type            = -1;
-
 //указатели на типы содержиого мини виджета
     Clock*                  pClock          = nullptr;
     Date*                   pDate           = nullptr;
