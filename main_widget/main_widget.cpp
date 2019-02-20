@@ -12,6 +12,9 @@ Main_Widget::Main_Widget()
                    widget_settings(QSettings::IniFormat, QSettings::UserScope, "INTERACTIVE_WHITEBOARD","interactive_whiteboard_widgets")
 
 {
+    generals_settings.setIniCodec("utf8");
+    widget_settings.setIniCodec("utf8");
+
     generalSettings();
     addMyWidgets();
 }
@@ -267,6 +270,7 @@ bool Main_Widget::event(QEvent *event)
                 if( !(pmini->geometry().contains(this->mapFromGlobal(QCursor::pos()))) )
                     pmini->hideSettingsButton();
         circleClike.close();
+        this->update();
     }
 
     if(event->type() == QEvent::MouseButtonPress){
@@ -278,7 +282,7 @@ bool Main_Widget::event(QEvent *event)
     }
 
     if(event->type() == QEvent::Resize){
-        slotBackgroundChanged(generals_settings.value("Generals/backgoundImage", ":img/school2").toString());
+        slotBackgroundChanged(generals_settings.value("Generals/backgoundImage", ":img/background").toString());
     }
 
     return QWidget::event(event);
@@ -324,6 +328,4 @@ void Main_Widget::generalSettings()
     circleClike.close();
     connect(&circleClike, SIGNAL(signalCircleEnd()), this, SLOT(slotShowContextMenu()) );
 
-//    qApp->setOverrideCursor(Qt::BlankCursor);
-//    this->showFullScreen();
 }

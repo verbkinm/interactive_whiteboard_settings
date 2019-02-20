@@ -22,10 +22,8 @@ public:
 
 private:
 
-
 //файл конфигураций для виджетов, добавляемых на доску
     QSettings                           generals_settings, widget_settings;
-
 //здесь будут храниться указатели на все виджеты на доске
     QList<Mini_Widget*>                 list_miniWidgets;
 
