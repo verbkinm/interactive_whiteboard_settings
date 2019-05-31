@@ -289,10 +289,10 @@ void Settings_window::selectType()
             ui->groupBox_xmlPath->hide();
             ui->groupBox_txtPath->hide();
             ui->groupBox_dirPath->hide();
-            ui->settings->removeTab(4);
-            ui->settings->removeTab(4);
-            ui->settings->removeTab(4);
-            ui->settings->removeTab(4);
+            ui->settings->removeTab(6);
+            ui->settings->removeTab(6);
+//            ui->settings->removeTab(4);
+//            ui->settings->removeTab(4);
             break;
         case BELLS_MONITOR:
             ui->settings->removeTab(3);

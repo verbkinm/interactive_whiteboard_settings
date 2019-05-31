@@ -17,6 +17,7 @@ Main_Widget::Main_Widget()
 
     generalSettings();
     addMyWidgets();
+
 }
 void Main_Widget::slotFileChange()
 {
@@ -328,4 +329,5 @@ void Main_Widget::generalSettings()
     circleClike.close();
     connect(&circleClike, SIGNAL(signalCircleEnd()), this, SLOT(slotShowContextMenu()) );
 
+    slotBackgroundChanged(generals_settings.value("Generals/backgoundImage", ":img/background").toString());
 }

@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 //    app.setOverrideCursor(Qt::BlankCursor);
     Main_Widget w;
 
-    w.showFullScreen();
+//    w.showFullScreen();
     w.show();
 
     return app.exec();
